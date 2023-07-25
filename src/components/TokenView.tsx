@@ -1,7 +1,7 @@
 import {
   Box,
   Card,
-  Link
+  Link, Typography
 } from "@mui/material"
 import TokenImage from "components/TokenImage"
 import TokenLive from "components/TokenLive"
@@ -23,29 +23,28 @@ const TokenView = ({
   aspectRatio=1,
   live=false
 }: Props) => {
-  const height = width / aspectRatio
+  // const height = width / aspectRatio
+  const lineCount = Math.floor(width / aspectRatio / 25)
+  const height = 25 * lineCount
+  const newWidth = height * aspectRatio
   return (
-    <Box width={String(width)+"px"} height={String(height)+"px"}>
-      <Card sx={{borderRadius: 0, boxShadow: 0}}>
-        {
-          live ?
-          (
-            <TokenLive contractAddress={contractAddress} tokenId={tokenId} width={width} height={height}/>
-          ) :
-          (
-            <TokenImage contractAddress={contractAddress} tokenId={tokenId} width={width} height={height}/>
-          )
-        }
-      </Card>
-      { invocation !== undefined &&
+
+    <Box>
+      {
+          invocation !== undefined &&
         (
-        <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end"}}>
-          <Link href={`/token/${contractAddress}/${tokenId}`} sx={{fontSize: "14px", textDecoration: "none"}}>
-            No. { invocation?.toString() }
-          </Link>
-        </Box>
+          <Box sx={{width: "100%", display: "flex", justifyContent: "center"}}>
+            <Link href={`/token/${contractAddress}/${tokenId}`} sx={{textDecoration: "none"}} underline="hover">
+              <Typography variant={"h6"}>#{ invocation?.toString() }</Typography>
+            </Link>
+          </Box>
         )
       }
+      <Box width={String(newWidth)+"px"} height={String(height)+"px"}>
+        <Link href={`/token/${contractAddress}/${tokenId}`} sx={{textDecoration: "none"}} underline="hover">
+          <TokenImage contractAddress={contractAddress} tokenId={tokenId} width={width} height={height}/>
+        </Link>
+      </Box>
     </Box>
   )
 }

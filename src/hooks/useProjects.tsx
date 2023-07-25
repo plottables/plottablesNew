@@ -51,12 +51,9 @@ const projectsQuery = ({ first, skip, orderDirection }: ProjectsQueryParams) => 
       }
       minterConfiguration {
         basePrice
-        startPrice
         priceIsConfigured
         currencySymbol
         currencyAddress
-        startTime
-        endTime
       }
     }
   }`

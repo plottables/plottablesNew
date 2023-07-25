@@ -10,7 +10,7 @@ import {
 import { BigNumber, ethers } from "ethers"
 import { Box, Typography, Modal } from "@mui/material"
 import { MULTIPLY_GAS_LIMIT } from "config"
-import { multiplyBigNumberByFloat, formatEtherFixed } from "utils/numbers"
+import { multiplyBigNumberByFloat } from "utils/numbers"
 import TokenView from "components/TokenView"
 import useWindowSize from "hooks/useWindowSize"
 import MintingButton from "components/MintingButton"
@@ -166,7 +166,7 @@ const GenArt721MinterButton = (
 
   const mintingDisabled = isPaused || isSoldOut || !isConnected || !isAllowanceVerified || !isBalanceVerified
 
-  let mintingMessage = `${artistCanMint ? "Artist Mint " : "Purchase "} for ${formatEtherFixed(priceWei.toString(), 3)} ${currencySymbol}`
+  let mintingMessage = `${artistCanMint ? "Artist Mint " : "Purchase "}`
   if (isPaused && !artistCanMint) mintingMessage = "minting paused"
   else if (isSoldOut) mintingMessage = "sold out"
   else if (!isConnected) mintingMessage = "connect to purchase"
@@ -180,7 +180,7 @@ const GenArt721MinterButton = (
         message={mintingMessage}
         contractPurchase={projectUsesErc20 && !isAllowanceVerified ? erc20WriteApprove.write : mintWrite.write}
       />
-      <Box marginTop={1}>
+      <Box>
         <Typography fontStyle="italic">
           {dialog}
         </Typography>

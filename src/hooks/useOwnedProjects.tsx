@@ -16,8 +16,6 @@ const ownedProjectsQuery = (walletAddress: string, { first, skip, orderDirection
           contract_in: ["${getConfiguredContractAddresses().join("\",\"").toLowerCase()}"]
           active: true
         }
-        first: ${first}
-        skip: ${skip}
         orderBy: createdAt
         orderDirection: ${orderDirection}
     ) {
@@ -56,12 +54,9 @@ const ownedProjectsQuery = (walletAddress: string, { first, skip, orderDirection
       }
       minterConfiguration {
         basePrice
-        startPrice
         priceIsConfigured
         currencySymbol
         currencyAddress
-        startTime
-        endTime
       }
     }
   }`
@@ -70,8 +65,13 @@ const useOwnedProjects = (walletAddress: string, params?: Params) => {
   const first = params?.first || PROJECTS_PER_PAGE
   const skip = params?.skip || 0
   const orderDirection = params?.orderDirection || OrderDirection.DESC
-  const { loading, error, data } = useQuery(gql(ownedProjectsQuery(walletAddress, { first, skip, orderDirection })))
+  let { loading, error, data } = useQuery(gql(ownedProjectsQuery(walletAddress, { first, skip, orderDirection })))
 
+  if (data) {
+    data = data?.projects?.filter((project: { tokens: string | any[] }) => {
+      return project.tokens.length > 0
+    })
+  }
   return {
     loading,
     error,

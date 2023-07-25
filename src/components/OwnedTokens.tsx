@@ -14,6 +14,7 @@ import useWindowSize from "hooks/useWindowSize"
 import useOwnedTokens from "hooks/useOwnedTokens"
 import useCountOwnedTokens from "hooks/useCountOwnedTokens"
 import { useEffect, useState } from "react"
+import {parseAspectRatio} from "../utils/scriptJSON";
 
 interface Props {
   contractAddress: string
@@ -77,31 +78,27 @@ const OwnedTokens = ({
 
   return (
     <Box>
-      <Grid spacing={2} container>
+      <Box sx={{display: "flex", justifyContent: "space-around"}}>
         {
           data.tokens.map(((token: Token) => (
-            <Grid key={token.tokenId} item md={4} sm={3} xs={6}>
-              <Link href={`/token/${contractAddress}/${token.tokenId}`}>
-                <TokenView
-                  contractAddress={contractAddress}
-                  tokenId={token.tokenId}
-                  aspectRatio={aspectRatio}
-                  width={width}
-                />
-              </Link>
-              <Typography mt={0.25} fontWeight="bold">
-                #{token.invocation.toString()}
-              </Typography>
-            </Grid>
+            <Box key={token.tokenId} sx={{display: "flex", justifyContent: "space-around"}}>
+              <TokenView
+                contractAddress={contractAddress}
+                tokenId={token.tokenId}
+                aspectRatio={aspectRatio}
+                width={400}
+                invocation={token.invocation}
+              />
+            </Box>
           )))
         }
-      </Grid>
+      </Box>
+      <Typography><br/></Typography>
       {
         !countOwnedTokensResponse.error && !countOwnedTokensResponse.loading && countOwnedTokens && (
-          <Box sx={{display: "flex", justifyContent: "center", marginBottom: "50px"}}>
+          <Box sx={{display: "flex", justifyContent: "center", height: "25px"}}>
             <Pagination
               count={Math.ceil(countOwnedTokens / OWNED_TOKENS_PER_PAGE)}
-              color="primary"
               page={currentPage + 1}
               onChange={(event, page) => {
                 setCurrentPage(page - 1)

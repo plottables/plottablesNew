@@ -16,6 +16,7 @@ const TokenImage = ({contractAddress, tokenId, width, height}: Props) => {
       alt={tokenId}
       width={width}
       height={height}
+      style={{boxShadow: "5px 5px 10px grey"}}
     />
   )
 }

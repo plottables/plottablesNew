@@ -7,6 +7,8 @@ import ProjectPage from "pages/ProjectPage"
 import TokenPage from "pages/TokenPage"
 import UserPage from "pages/UserPage"
 import Providers from "components/Providers"
+import TermsOfUsePage from "./pages/TermsOfUsePage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="project/:contractAddress/:projectId" element={<ProjectPage/>}/>
           <Route path="token/:contractAddress/:id" element={<TokenPage/>}/>
           <Route path="user/:walletAddress" element={<UserPage/>}/>
+          <Route path="termsOfUse" element={<TermsOfUsePage/>}/>
+          <Route path="privacyPolicy" element={<PrivacyPolicyPage/>}/>
         </Routes>
       </Router>
       <ToastContainer

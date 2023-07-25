@@ -5,10 +5,11 @@ import {
 } from "@mui/material"
 import { Project } from "utils/types"
 import { parseAspectRatio } from "utils/scriptJSON"
-import Collapsible from "components/Collapsible"
-import ProjectDate from "components/ProjectDate"
 import TokenView from "components/TokenView"
-import ProjectStatusBadge from "./ProjectStatusBadge"
+import ReactMarkdown from "react-markdown";
+import { CALENDAR } from "../config";
+import LineBreak from "./LineBreak";
+import ProjectStatusBadge from "./ProjectStatusBadge";
 
 interface Props {
   project: Project
@@ -21,42 +22,52 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
     return null
   }
 
+  // let releaseDate = project.minterConfiguration?.startTime;
+  let releaseDate = null;
+  if (!releaseDate) {
+    releaseDate = new Date(CALENDAR[project.contract.id.toLowerCase()][Number(project.projectId)])
+  }
+  const releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZoneName: "short",
+    hour: "numeric",
+  });
+
   const token = project?.tokens[0]
   return (
     <Box>
-      <Box>
-        <Link href={`/project/${project.contract.id}/${project.projectId}`} underline="hover">
-          <Typography variant="h1" fontSize={36}>
-            {project.name}
+      <Box sx={{display: "flex"}}>
+        <Link href={`/project/${project.contract.id}/${project.projectId}`} underline="hover" sx={{paddingRight: "50px"}}>
+          <Typography variant={"h6"}>
+            {project.name} by {project.artistName}
           </Typography>
         </Link>
-        <Typography variant="h6" mb={1}>
-          by {project.artistName}
-        </Typography>
+        <ProjectStatusBadge complete={project.complete} paused={project.paused} startTime={project?.minterConfiguration?.startTime} />
       </Box>
-      <TokenView
-        contractAddress={project.contract.id}
-        tokenId={token?.tokenId}
-        width={width}
-        invocation={token?.invocation}
-        aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
-      />
-      <Box>
-        <Box sx={{display: "flex", alignItems:"center"}}>
-
-          <ProjectStatusBadge complete={project.complete} paused={project.paused} startTime={project?.minterConfiguration?.startTime} />
-          <ProjectDate
-            startTime={project.minterConfiguration?.startTime}
+      <Box sx={{display: "flex", justifyContent: "space-between"}}>
+        <Box sx={{paddingLeft: "25px"}}>
+          <Typography><br/></Typography>
+          <Typography>Release Date: {releaseDateFormatted}</Typography>
+          {
+            showDescription && (
+              <ReactMarkdown className="markdown">{project.description}</ReactMarkdown>
+            )
+          }
+        </Box>
+        <Box sx={{marginX: "100px"}}>
+          <TokenView
+            contractAddress={project.contract.id}
+            tokenId={token?.tokenId}
+            width={500}
+            invocation={token?.invocation}
+            aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
           />
         </Box>
-        {
-          showDescription && (
-            <Box marginTop={2}>
-              <Collapsible content={project.description}/>
-            </Box>
-          )
-        }
       </Box>
+      <Typography><br/></Typography>
+      <LineBreak/>
     </Box>
   )
 }

@@ -9,20 +9,13 @@ interface Props {
 const MintingButton = ({disabled, message, contractPurchase}: Props) => {
   return (
     <Button
-      variant="contained"
-      color="primary"
       disabled={disabled}
       onClick={() => contractPurchase?.()}
       sx={{
-        minWidth: "210px",
-        paddingTop: 1.5,
-        paddingRight: 1,
-        paddingLeft: 1,
-        paddingBottom: 1.5,
         boxShadow: "none",
         textTransform: "none"
       }}>
-        <Typography fontSize={16} fontWeight={800}>
+        <Typography variant={"h2"}>
           {message}
         </Typography>
     </Button>

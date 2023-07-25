@@ -55,114 +55,73 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
 
   return token && contractConfig && (
     <Box>
-      <Breadcrumbs aria-label="breadcrumb" sx={{marginBottom: 4}}>
-        <Link href="/projects" underline="hover" sx={{color: "#666"}}>
-          Home
+
+      <Box sx={{display: "flex", justifyContent: "center"}}>
+        <Link href={`/project/${contractAddress}/${token.project.projectId}`} underline={"hover"}>
+          <Typography variant={"h6"}>{token.project.name} Gallery</Typography>
         </Link>
-        <Link href={`/project/${contractAddress}/${token.project.projectId}`} underline="hover" sx={{color: "#666"}}>
-          {token.project.name}
-        </Link>
-        <Typography>
-          {token.invocation}
-        </Typography>
-      </Breadcrumbs>
-      <Grid container spacing={2}>
-        <Grid item md={8}>
+      </Box>
+
+      <Typography><br/></Typography>
+
+      <Box sx={{display: "flex", justifyContent: "space-around"}}>
+
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+
+          <Box sx={{display: "flex", justifyContent: "space-around"}}>
+            <Link href={`https://media.plottables.io/api/plot?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+              <Typography variant={"h6"}>plot</Typography>
+            </Link>
+            <Link href={`https://media.plottables.io/api/svg?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+              <Typography variant={"h6"}>svg</Typography>
+            </Link>
+            <Link href={`${contractConfig.MEDIA_URL}/${token.tokenId}.png`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+              <Typography variant={"h6"}>image</Typography>
+            </Link>
+            <Link href={`${contractConfig.GENERATOR_URL}/${contractAddress?.toLowerCase()}/${token.tokenId}`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+              <Typography variant={"h6"}>live</Typography>
+            </Link>
+          </Box>
           <TokenView
             contractAddress={contractAddress}
             tokenId={token.tokenId}
-            width={width}
+            width={600}
             aspectRatio={token.project.aspectRatio || parseAspectRatio(token.project.scriptJSON)}
             live
           />
-          <Box sx={{marginTop: 1, display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-            <Box>
-              <Typography>
-                Owned by <Address address={token.owner.id}></Address>
-              </Typography>
-            </Box>
-            <Box sx={{display: "flex", justifyContent: "space-between"}}>
-              <Button
-                startIcon={<VisibilityIcon sx={{color: "#666"}}/>}
-                sx={{
-                  fontSize: 14,
-                  textTransform: "none",
-                  minWidth: [0, 0, "64px"],
-                  padding: [0, 0, "default"]
-                }}
-                onClick={() => {
-                  const generatorUrl = contractConfig?.GENERATOR_URL
-                  window.open(`${generatorUrl}/${contractAddress?.toLowerCase()}/${token.tokenId}`)
-                }}
-                >
-                <Typography fontSize="14px" display={["none", "none", "block"]}>
-                  Live view
-                </Typography>
-              </Button>
-              <Button
-                startIcon={<ImageIcon sx={{color: "#666"}}/>}
-                sx={{
-                  fontSize: 14,
-                  textTransform: "none",
-                  marginLeft: [1, 1, 2],
-                  minWidth: [0, 0, "64px"],
-                  padding: [0, 0, "default"]
-                }}
-                onClick={() => {
-                  const mediaUrl = contractConfig?.MEDIA_URL
-                  window.open(`${mediaUrl}/${token.tokenId}.png`)
-                }}
-                >
-                <Typography fontSize="14px" display={["none", "none", "block"]}>
-                  Image
-                </Typography>
-              </Button>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item md={4}>
-          <Typography fontSize="16px" mb={4}>
+        </Box>
+
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", minWidth: "40%"}}>
+          <Typography>
+            {token.project.name} #{token.invocation} by {token.project.artistName}
+          </Typography>
+          <Typography><br/></Typography>
+          <Typography>
             Minted {moment.unix(token.createdAt).format("LL")}
           </Typography>
-          <Typography variant="h1">
-            {token.project.name} #{token.invocation}
+          <Typography>
+            Owned by <Address address={token.owner.id}></Address>
           </Typography>
-          <Typography variant="h6">
-            {token.project.artistName}
-          </Typography>
-          <Box>
-            <Box>
-              <Button
-                endIcon={<ArrowForwardIcon />}
-                onClick={() => {
-                  window.open(`https://etherscan.io/token/${contractAddress?.toLowerCase()}?a=${token.tokenId}`)
-                }}
-                >
-                <Typography fontSize="14px" sx={{textTransform: "none"}}>
-                  View on Etherscan
-                </Typography>
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                endIcon={<ArrowForwardIcon />}
-                onClick={() => {
-                  window.open(`https://opensea.io/assets/ethereum/${contractAddress?.toLowerCase()}/${token.tokenId}`)
-                }}
-                >
-                <Typography fontSize="14px" sx={{textTransform: "none"}}>
-                  View on OpenSea
-                </Typography>
-              </Button>
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid container spacing={2} mt={4} mb={4}>
-        <Grid item md={6}>
+          <Typography><br/></Typography>
+
+          <Link href={`https://etherscan.io/token/${contractAddress?.toLowerCase()}?a=${token.tokenId}`} target={"_blank"} underline={"hover"}>
+            <Typography variant={"h6"}>
+              View on Etherscan
+            </Typography>
+          </Link>
+          <Link href={`https://opensea.io/assets/ethereum/${contractAddress?.toLowerCase()}/${token.tokenId}`} target={"_blank"} underline={"hover"}>
+            <Typography variant={"h6"}>
+              View on OpenSea
+            </Typography>
+          </Link>
+
+          <Typography><br/></Typography>
           <TokenTraits contractAddress={contractAddress} tokenId={token.tokenId}/>
-        </Grid>
-      </Grid>
+
+        </Box>
+
+      </Box>
+      <Typography><br/></Typography>
     </Box>
   )
 }

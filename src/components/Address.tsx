@@ -1,5 +1,5 @@
 import { useEnsName } from "wagmi"
-import Tooltip from "@mui/material/Tooltip"
+import {Link, Typography} from "@mui/material";
 
 interface Props {
   address?: any
@@ -15,9 +15,9 @@ const Address = ({ address }: Props) => {
 
   return (
     address !== null ?
-    <Tooltip title={address}>
-      <span>{ensName.data || shortAddress}</span>
-    </Tooltip>
+      <Link href={`/user/${address}`} underline={"hover"}>
+        <Typography variant={"h6"} component={"span"}>{ensName.data || shortAddress}</Typography>
+      </Link>
     : null
   )
 }

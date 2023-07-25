@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useAccount, useContractReads } from "wagmi"
 import { BigNumber } from "ethers"
-import { Box } from "@mui/material"
+import {Box, Link, Typography} from "@mui/material"
 import MintingProgress from "components/MintingProgress"
 import MintingPrice from "components/MintingPrice"
 import GenArt721CoreV2ABI from "abi/V2/GenArt721CoreV2.json"
@@ -75,34 +75,47 @@ const GenArt721MinterInterface = (
   const isNotArtist = account.isConnected && account.address?.toLowerCase() !== artistAddress?.toLowerCase()
   const artistCanMint = isArtist && !maxHasBeenInvoked
   const anyoneCanMint = isNotArtist && !maxHasBeenInvoked && !isPaused
+  const website = projectDetails.website
 
   return (
     <Box>
-      <MintingProgress
-        invocations={invocations}
-        maxInvocations={maxInvocations}
-        maxHasBeenInvoked={maxHasBeenInvoked}
-      />
-      <MintingPrice
-        startPriceWei={currentPriceWei}
-        currentPriceWei={currentPriceWei}
-        endPriceWei={currentPriceWei}
-        currencySymbol={currencySymbol}
-      />
-      <GenArt721MinterButton
-        coreContractAddress={coreContractAddress}
-        mintContractAddress={mintContractAddress}
-        projectId={projectId}
-        priceWei={currentPriceWei}
-        currencySymbol={currencySymbol}
-        currencyAddress={currencyAddress}
-        isConnected={account.isConnected}
-        artistCanMint={artistCanMint}
-        anyoneCanMint={anyoneCanMint}
-        scriptAspectRatio={scriptAspectRatio}
-        isPaused={isPaused}
-        isSoldOut={maxHasBeenInvoked}
-      />
+      <Box sx={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+        <MintingProgress
+          invocations={invocations}
+          maxInvocations={maxInvocations}
+          maxHasBeenInvoked={maxHasBeenInvoked}
+        />
+        <MintingPrice
+          startPriceWei={currentPriceWei}
+          currentPriceWei={currentPriceWei}
+          endPriceWei={currentPriceWei}
+          currencySymbol={currencySymbol}
+        />
+      </Box>
+
+      <Box sx={{display: "flex", justifyContent: "center"}}>
+        <GenArt721MinterButton
+          coreContractAddress={coreContractAddress}
+          mintContractAddress={mintContractAddress}
+          projectId={projectId}
+          priceWei={currentPriceWei}
+          currencySymbol={currencySymbol}
+          currencyAddress={currencyAddress}
+          isConnected={account.isConnected}
+          artistCanMint={artistCanMint}
+          anyoneCanMint={anyoneCanMint}
+          scriptAspectRatio={scriptAspectRatio}
+          isPaused={isPaused}
+          isSoldOut={maxHasBeenInvoked}
+        />
+      </Box>
+
+      <Typography><br/></Typography>
+      <Box sx={{display: "flex", justifyContent: "center"}}>
+        <Link href={website}>
+          <Typography variant={"h6"}>{website}</Typography>
+        </Link>
+      </Box>
     </Box>
   )
 }

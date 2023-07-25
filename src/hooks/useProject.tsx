@@ -24,6 +24,7 @@ const projectQuery = (id: string) => `
       maxInvocations
       scriptJSON
       scriptTypeAndVersion
+      website
       aspectRatio
       currencyAddress
       currencySymbol
@@ -36,12 +37,9 @@ const projectQuery = (id: string) => `
       }
       minterConfiguration {
         basePrice
-        startPrice
         priceIsConfigured
         currencySymbol
         currencyAddress
-        startTime
-        endTime
       }
     }
   }`

@@ -19,18 +19,18 @@ const MintingPrice = ({startPriceWei, currentPriceWei, endPriceWei, currencySymb
   return (
     <Box sx={{marginBottom: 3}}>
       <Box>
-        { 
-          fixedPrice ? 
+        {
+          fixedPrice ?
           (
-            <Typography fontWeight="bold">Fixed Price: {utils.formatEther(startPriceWei.toString())} {currencySymbol}</Typography>
+            <Typography>Fixed Price: {utils.formatEther(startPriceWei.toString())} {currencySymbol}</Typography>
           ) :
           (
-            <Typography fontWeight="bold">Auction Price ({currencySymbol})</Typography>
-          ) 
+            <Typography>Auction Price ({currencySymbol})</Typography>
+          )
         }
       </Box>
       {
-        !fixedPrice && 
+        !fixedPrice &&
         (
           <Box sx={{marginTop: 0.25}}>
           <Box sx={{display: "flex", justifyContent: "space-between"}}>

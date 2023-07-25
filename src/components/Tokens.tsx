@@ -5,12 +5,13 @@ import {
   Grid,
   Link,
   Alert,
-  Typography
+  Typography, Box
 } from "@mui/material"
 import Loading from "components/Loading"
 import TokenView from "components/TokenView"
 import useTokens from "hooks/useTokens"
 import useWindowSize from "hooks/useWindowSize"
+import {parseAspectRatio} from "../utils/scriptJSON";
 
 interface Props {
   contractAddress: string
@@ -65,27 +66,23 @@ const Tokens = ({
   }
 
   return (
-    data.tokens.length > 0 ?
-      <Grid spacing={2} container>
+      <Box sx={{display: "flex", flexWrap: "wrap", justifyContent: "space-around"}}>
         {
+          data.tokens.length > 0 ?
           data.tokens.map(((token:Token) => (
-            <Grid key={token.tokenId} item md={4} sm={6} xs={6}>
-              <Link href={`/token/${contractAddress}/${token.tokenId}`}>
-                <TokenView
-                  contractAddress={contractAddress}
-                  tokenId={token.tokenId}
-                  aspectRatio={aspectRatio}
-                  width={width}
-                />
-              </Link>
-              <Typography mt={0.25} fontWeight="bold">
-                #{token.invocation.toString()}
-              </Typography>
-            </Grid>
+            <Box sx={{paddingTop: "25px"}} key={`${token.id}`}>
+              <TokenView
+                contractAddress={contractAddress}
+                tokenId={token.tokenId}
+                aspectRatio={aspectRatio}
+                width={350}
+                invocation={token.invocation}
+              />
+            </Box>
           )))
+            : null
         }
-      </Grid>
-    : null
+      </Box>
   )
 }
 
