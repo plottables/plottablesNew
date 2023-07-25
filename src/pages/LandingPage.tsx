@@ -10,10 +10,8 @@ const LandingPage = () => {
     <Page>
       <Box>
 
-        <Box display="flex" marginY={"100px"}>
-          <Box m="auto">
-            <Logo/>
-          </Box>
+        <Box sx={{display: "flex", width: "100%", justifyContent: "space-around"}}>
+          <Logo/>
         </Box>
 
         <Typography align={"center"}><br/></Typography>
