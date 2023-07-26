@@ -60,11 +60,10 @@ const OwnedProjects = ({ walletAddress }: Props) => {
               {
                 data && (
                   data?.slice(currentPage * PROJECTS_PER_PAGE, (currentPage + 1) * PROJECTS_PER_PAGE).map((project: Project) => (
-                    <Box key={project.id}>
+                    <Box key={project.id} sx={{marginBottom: "25px"}}>
                       <Link href={`/project/${project.contract.id}/${project.projectId}`} underline="hover">
                         <Typography variant={"h6"}>{project.name} by {project.artistName}</Typography>
                       </Link>
-                      <Typography><br/></Typography>
                       <OwnedTokens contractAddress={project.contract.id} projectId={project.id} walletAddress={walletAddress} aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}/>
                       <LineBreak/>
                     </Box>

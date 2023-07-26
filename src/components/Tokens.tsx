@@ -70,12 +70,12 @@ const Tokens = ({
         {
           data.tokens.length > 0 ?
           data.tokens.map(((token:Token) => (
-            <Box sx={{paddingTop: "25px"}} key={`${token.id}`}>
+            <Box sx={{paddingTop: "25px", paddingX: "10px"}} key={`${token.id}`}>
               <TokenView
                 contractAddress={contractAddress}
                 tokenId={token.tokenId}
                 aspectRatio={aspectRatio}
-                width={350}
+                width={windowSize.width > theme.breakpoints.values.tablet ? Math.min(windowSize.width / 3, 350) : 0.8 * windowSize.width}
                 invocation={token.invocation}
               />
             </Box>

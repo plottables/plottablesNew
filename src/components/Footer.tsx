@@ -2,7 +2,13 @@ import { Box, Link, Typography } from "@mui/material"
 
 const Footer = () => {
   return (
-    <Box sx={{position: "absolute", bottom: "0", display: "flex", justifyContent: {mobile: "center", tablet: "space-between"}, width: "calc(100% - 70px)"}}>
+    <Box sx={{
+      position: "absolute",
+      bottom: "0",
+      display: "flex",
+      justifyContent: {mobile: "center", tablet: "space-between"},
+      width: {mobile: "calc(100% - 32px)", tablet: "calc(100% - 70px)"}
+    }}>
 
       <Box sx={{display: {mobile: "none", tablet: "flex"}, textAlign: "left"}}>
         <Link href={"/termsOfUse"} paddingRight={"25px"} underline={"hover"}>

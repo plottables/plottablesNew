@@ -64,34 +64,34 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
 
       <Typography><br/></Typography>
 
-      <Box sx={{display: "flex", justifyContent: "space-around"}}>
+      <Box sx={{display: {mobile: "block", tablet: "flex"}, justifyContent: "space-around"}}>
 
         <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
 
           <Box sx={{display: "flex", justifyContent: "space-around"}}>
-            <Link href={`https://media.plottables.io/api/plot?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+            <Link href={`https://media.plottables.io/api/plot?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>plot</Typography>
             </Link>
-            <Link href={`https://media.plottables.io/api/svg?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+            <Link href={`https://media.plottables.io/api/svg?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>svg</Typography>
             </Link>
-            <Link href={`${contractConfig.MEDIA_URL}/${token.tokenId}.png`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+            <Link href={`${contractConfig.MEDIA_URL}/${token.tokenId}.png`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>image</Typography>
             </Link>
-            <Link href={`${contractConfig.GENERATOR_URL}/${contractAddress?.toLowerCase()}/${token.tokenId}`} sx={{paddingX: "25px"}} target={"_blank"} underline={"hover"}>
+            <Link href={`${contractConfig.GENERATOR_URL}/${contractAddress?.toLowerCase()}/${token.tokenId}`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>live</Typography>
             </Link>
           </Box>
           <TokenView
             contractAddress={contractAddress}
             tokenId={token.tokenId}
-            width={600}
+            width={windowSize.width > theme.breakpoints.values.tablet ? Math.min(windowSize.width / 3, 600) : 0.8 * windowSize.width}
             aspectRatio={token.project.aspectRatio || parseAspectRatio(token.project.scriptJSON)}
             live
           />
         </Box>
 
-        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", minWidth: "40%"}}>
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", minWidth: "40%", marginTop: {mobile: "25px", tablet: "0px"}}}>
           <Typography>
             {token.project.name} #{token.invocation} by {token.project.artistName}
           </Typography>

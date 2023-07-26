@@ -40,9 +40,13 @@ const TokenView = ({
           </Box>
         )
       }
-      <Box width={String(newWidth)+"px"} height={String(height)+"px"}>
+      <Box width={String(newWidth)+"px"} height={String(height)+"px"} sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}>
         <Link href={`/token/${contractAddress}/${tokenId}`} sx={{textDecoration: "none"}} underline="hover">
-          <TokenImage contractAddress={contractAddress} tokenId={tokenId} width={width} height={height}/>
+          <TokenImage contractAddress={contractAddress} tokenId={tokenId} width={newWidth} height={height}/>
         </Link>
       </Box>
     </Box>

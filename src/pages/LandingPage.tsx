@@ -10,7 +10,7 @@ const LandingPage = () => {
     <Page>
       <Box>
 
-        <Box sx={{display: "flex", width: "100%", justifyContent: "space-around", marginY: {xs: "25px", sm: "50px", md: "100px"}}}>
+        <Box sx={{display: "flex", width: "100%", justifyContent: "space-around", marginY: {mobile: "0px", tablet: "50px", laptop: "100px"}}}>
           <Logo/>
         </Box>
 
@@ -35,6 +35,7 @@ const LandingPage = () => {
         </Box>
         <Typography align={"center"}>Nope! All works minted here exists just like any other NFT.</Typography>
 
+        <Typography align={"center"}><br/></Typography>
       </Box>
     </Page>
   )

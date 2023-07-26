@@ -105,18 +105,35 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
       </Box>
       <Typography><br/></Typography>
 
-      <Box sx={{display: "flex", justifyContent: "space-around"}}>
-        <Box sx={{paddingX: "100px"}}>
+      <Box sx={{
+        display: {mobile: "block", tablet: "flex"},
+        justifyContent: "space-around"
+      }}>
+        <Box sx={{paddingX: {mobile: "0px", tablet: "100px"}}}>
           <TokenView
             contractAddress={contractConfig?.CORE_CONTRACT_ADDRESS}
             tokenId={token.tokenId}
-            width={600}
+            width={windowSize.width > theme.breakpoints.values.tablet ? Math.min(windowSize.width / 3, 600) : 0.8 * windowSize.width}
             invocation={token.invocation}
             aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
             live
           />
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+        <Box sx={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          paddingTop: "25px",
+          ".markdown > p": {
+            lineHeight: "25px",
+            fontSize: "20px",
+            letterSpacing: "1px",
+            wordSpacing: "5px",
+            marginTop: "25px",
+            marginBottom: "25px",
+            textAlign: {mobile: "center", tablet: "left"}
+          }
+        }}>
           <MintingInterfaceFilter
             contractVersion={contractConfig?.CONTRACT_VERSION}
             coreContractAddress={contractAddress}
@@ -130,14 +147,18 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
       </Box>
 
       <Typography><br/></Typography>
-      <Box sx={{display: "flex", justifyContent: "space-around"}}>
+      <Box sx={{display: {mobile: "block", tablet: "flex"}, justifyContent: "space-around"}}>
         {releaseDateFormatted &&
-          <Box>
+          <Box sx={{
+            marginBottom: {mobile: "25px", tablet: "0px"}
+          }}>
             <Typography>Release Date: {releaseDateFormatted}</Typography>
           </Box>
         }
         {project?.license &&
-          <Box>
+          <Box sx={{
+            marginBottom: {mobile: "25px", tablet: "0px"}
+          }}>
             <Typography>License: {project.license}</Typography>
           </Box>
         }
@@ -159,7 +180,7 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
         aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
       />
 
-      <Box sx={{display: "flex", justifyContent: "center", marginTop: "25px"}}>
+      <Box sx={{display: "flex", justifyContent: "center", marginTop: "50px", marginBottom: "25px"}}>
         <Pagination
           count={Math.ceil(project.invocations/TOKENS_PER_PAGE)}
           page={currentPage + 1}

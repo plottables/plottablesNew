@@ -38,16 +38,31 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
   const token = project?.tokens[0]
   return (
     <Box>
-      <Box sx={{display: "flex"}}>
-        <Link href={`/project/${project.contract.id}/${project.projectId}`} underline="hover" sx={{paddingRight: "50px"}}>
+      <Box sx={{
+        display: {tablet: "flex"},
+        textAlign: {mobile: "center"},
+        marginBottom: {mobile: "25px", tablet: "0px"}
+      }}>
+        <Link href={`/project/${project.contract.id}/${project.projectId}`} underline="hover" sx={{paddingRight: {mobile: "0px", tablet: "50px"}}}>
           <Typography variant={"h6"}>
             {project.name} by {project.artistName}
           </Typography>
         </Link>
-        <ProjectStatusBadge complete={project.complete} paused={project.paused} startTime={project?.minterConfiguration?.startTime} />
+        <Box sx={{textAlign: {mobile: "center"}, maxHeight: "25px"}}>
+          <ProjectStatusBadge complete={project.complete} paused={project.paused} startTime={project?.minterConfiguration?.startTime} />
+        </Box>
       </Box>
-      <Box sx={{display: {xs: "block", sm: "block", md: "flex"}, justifyContent: "space-between", flexDirection: "row-reverse"}}>
-        <Box sx={{display: "flex", justifyContent: "center", marginLeft: {xs: "25px", sm: "50px", md: "100px"}}}>
+      <Box sx={{
+        display: {mobile: "block", tablet: "flex"},
+        justifyContent: "space-between",
+        flexDirection: "row-reverse"
+      }}>
+        <Box sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginLeft: {mobile: "0px", tablet: "50px"},
+          marginBottom: "25px"
+        }}>
           <TokenView
             contractAddress={project.contract.id}
             tokenId={token?.tokenId}
@@ -56,7 +71,17 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
             aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
           />
         </Box>
-        <Box sx={{paddingLeft: "25px"}}>
+        <Box sx={{
+          paddingLeft: {mobile: "0px", tablet: "25px"},
+          ".markdown > p": {
+            lineHeight: "25px",
+            fontSize: "20px",
+            letterSpacing: "1px",
+            wordSpacing: "5px",
+            marginTop: "25px",
+            marginBottom: "25px"
+          }
+        }}>
           <Typography><br/></Typography>
           <Typography>Release Date: {releaseDateFormatted}</Typography>
           {
@@ -66,7 +91,6 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
           }
         </Box>
       </Box>
-      <Typography><br/></Typography>
       <LineBreak/>
     </Box>
   )

@@ -13,13 +13,13 @@ const ProjectStatusBadge = ({ complete, paused, startTime }: Props) => {
   const startDate = startTime ? moment.unix(parseInt(startTime.toString())) : null;
 
   if (startDate?.isAfter()) {
-    return <Typography variant={"h4"}>Upcoming</Typography>
+    return <Typography component={"span"} variant={"h4"}>Upcoming</Typography>
   } else if (paused) {
-    return <Typography variant={"h5"}>Paused</Typography>
+    return <Typography component={"span"} variant={"h5"}>Paused</Typography>
   } else if (!complete) {
-    return <Typography variant={"h2"}>Live</Typography>
+    return <Typography component={"span"} variant={"h2"}>Live</Typography>
   } else {
-    return <Typography variant={"h3"}>Complete</Typography>
+    return <Typography component={"span"} variant={"h3"}>Complete</Typography>
   }
   // return (
   //   <Box sx={{

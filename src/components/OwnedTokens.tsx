@@ -78,15 +78,15 @@ const OwnedTokens = ({
 
   return (
     <Box>
-      <Box sx={{display: "flex", justifyContent: "space-around"}}>
+      <Box sx={{display: {mobile: "block", tablet: "flex"}, justifyContent: "space-around"}}>
         {
           data.tokens.map(((token: Token) => (
-            <Box key={token.tokenId} sx={{display: "flex", justifyContent: "space-around"}}>
+            <Box key={token.tokenId} sx={{display: "flex", justifyContent: "space-around", marginTop: "25px"}}>
               <TokenView
                 contractAddress={contractAddress}
                 tokenId={token.tokenId}
                 aspectRatio={aspectRatio}
-                width={400}
+                width={windowSize.width > theme.breakpoints.values.tablet ? Math.min(windowSize.width / 4, 400) : 0.8 * windowSize.width}
                 invocation={token.invocation}
               />
             </Box>

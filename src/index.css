@@ -1,51 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Gochi+Hand");
 
-body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 25px;
-}
-
-
-.paper {
-  position: relative;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: white;
-  height: 100%;
-  min-height: calc(100vh - 80px);
-  width: 100%;
-}
-
-.paper::before {
-  content: "";
-  width: 2px;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 40px;
-  background-color: rgba(255, 0, 0, 0.6);
-}
-
-.paper-content {
-  min-height: calc(100vh - 80px);
-  height: 100%;
-  background-image: repeating-linear-gradient(white 0px, white 24px, teal 25px);
-  padding-top: 7px;
-  padding-left: 56px;
-  padding-right: 16px;
-}
-
-.markdown > p {
-  line-height: 25px;
-  font-size: 20px;
-  letter-spacing: 1px;
-  word-spacing: 5px;
-  margin-top: 25px;
-  margin-bottom: 25px;
-}
-
 .logo > * > * > path {
   stroke-dasharray: 3000;
   stroke-dashoffset: 0;
