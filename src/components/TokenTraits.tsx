@@ -39,7 +39,7 @@ const TokenTraits = ({ contractAddress, tokenId }: Props) => {
       {traits.map((trait:Trait) => {
         const p = trait.value.split(":")
         return (
-          <Typography key={trait.value} variant={"h2"}>{p[0]}: {p[1]}</Typography>
+          <Typography key={trait.value} component={"span"} variant={"h2"}>{p[0]}: {p[1]}</Typography>
         )
       })}
     </Box>

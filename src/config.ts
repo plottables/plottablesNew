@@ -50,3 +50,11 @@ export const CALENDAR: calendar = {
     0: "6/27/2023 3:00:00 PM EDT"
   }
 }
+
+export const ARTFORA_CONFIG = {
+  collection_base_url: "https://www.artfora.com/collections",
+  token_base_url: "https://www.artfora.com/assets",
+  projects: {
+    "0xa319c382a702682129fcbf55d514e61a16f97f9c-22": "stroomlijn"
+  }
+}

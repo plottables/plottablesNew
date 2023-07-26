@@ -20,6 +20,7 @@ import TokenView from "components/TokenView"
 import useToken from "hooks/useToken"
 import useWindowSize from "hooks/useWindowSize"
 import { getContractConfigByAddress } from "utils/contractInfoHelper";
+import {ARTFORA_CONFIG} from "../config";
 
 interface Props {
   contractAddress: string
@@ -53,6 +54,7 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
         ? windowSize.width - 48
         : windowSize.width - 32
 
+  console.log(token)
   return token && contractConfig && (
     <Box>
 
@@ -103,6 +105,18 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
             Owned by <Address address={token.owner.id}></Address>
           </Typography>
           <Typography><br/></Typography>
+
+          {
+            Object.keys(ARTFORA_CONFIG.projects).includes(token.project.id) && (
+              <Box sx={{maxHeight: "25px", marginBottom: "25px"}}>
+                <Link href={`https://etherscan.io/token/${contractAddress?.toLowerCase()}?a=${token.tokenId}`} target={"_blank"} underline={"hover"}>
+                  <Typography component={"span"} variant={"h3"}>
+                    Purchase Plot on Artfora
+                  </Typography>
+                </Link>
+              </Box>
+            )
+          }
 
           <Link href={`https://etherscan.io/token/${contractAddress?.toLowerCase()}?a=${token.tokenId}`} target={"_blank"} underline={"hover"}>
             <Typography variant={"h6"}>
