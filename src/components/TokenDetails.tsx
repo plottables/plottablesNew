@@ -119,7 +119,7 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
             Object.keys(ARTFORA_CONFIG.projects).includes(token.project.id) && (
               <Box sx={{maxHeight: "25px", marginBottom: "25px"}}>
                 <Link href={`https://etherscan.io/token/${contractAddress?.toLowerCase()}?a=${token.tokenId}`} target={"_blank"} underline={"hover"}>
-                  <Typography component={"span"} variant={"h3"}>
+                  <Typography component={"span"} variant={"h3"} color={"blue"}>
                     Purchase Plot on Artfora
                   </Typography>
                 </Link>
