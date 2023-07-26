@@ -21,6 +21,7 @@ import useToken from "hooks/useToken"
 import useWindowSize from "hooks/useWindowSize"
 import { getContractConfigByAddress } from "utils/contractInfoHelper";
 import {ARTFORA_CONFIG} from "../config";
+import {useAccount} from "wagmi";
 
 interface Props {
   contractAddress: string
@@ -30,6 +31,7 @@ interface Props {
 const TokenDetails = ({ contractAddress, id }: Props) => {
   const theme = useTheme()
   const windowSize = useWindowSize()
+  const account = useAccount();
   const { loading, error, data } = useToken(`${contractAddress.toLowerCase()}-${id}`)
   const token = data?.token
   const contractConfig = getContractConfigByAddress(contractAddress)
@@ -71,18 +73,25 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
         <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
 
           <Box sx={{display: "flex", justifyContent: "space-around"}}>
-            <Link href={`https://media.plottables.io/api/plot?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
+            <Link href={`https://media.plottables.io/api/plot?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{marginX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>plot</Typography>
             </Link>
-            <Link href={`https://media.plottables.io/api/svg?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
+            <Link href={`https://media.plottables.io/api/svg?contractAddress=${contractAddress}&tokenId=${id}&uri=${encodeURI(`${contractConfig.GENERATOR_URL}`)}`} sx={{marginX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>svg</Typography>
             </Link>
-            <Link href={`${contractConfig.MEDIA_URL}/${token.tokenId}.png`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
+            <Link href={`${contractConfig.MEDIA_URL}/${token.tokenId}.png`} sx={{marginX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>image</Typography>
             </Link>
-            <Link href={`${contractConfig.GENERATOR_URL}/${contractAddress?.toLowerCase()}/${token.tokenId}`} sx={{paddingX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
+            <Link href={`${contractConfig.GENERATOR_URL}/${contractAddress?.toLowerCase()}/${token.tokenId}`} sx={{marginX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
               <Typography variant={"h6"}>live</Typography>
             </Link>
+            {
+              account.address?.toLowerCase() === token.project.artistAddress && (
+                <Link href={`https://media.plottables.io/api/signArtist?url=${encodeURI(`${contractConfig.MEDIA_URL}/${token.tokenId}.png`)}`} sx={{marginX: {mobile: "10px", tablet: "25px"}}} target={"_blank"} underline={"hover"}>
+                  <Typography variant={"h6"}>sign</Typography>
+                </Link>
+              )
+            }
           </Box>
           <TokenView
             contractAddress={contractAddress}
