@@ -55,7 +55,7 @@ const Projects = () => {
                 <Box key={`${project.contract.id}-${project.projectId}`} sx={{marginBottom: "25px"}}>
                   <ProjectPreview
                     project={project}
-                    width={100}
+                    width={windowSize.width > theme.breakpoints.values.tablet ? windowSize.width / 3 : 0.8 * windowSize.width}
                     showDescription
                   />
                 </Box>

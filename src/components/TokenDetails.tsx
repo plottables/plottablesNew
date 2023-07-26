@@ -47,9 +47,9 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
     )
   }
 
-  const width = windowSize.width > theme.breakpoints.values.md
+  const width = windowSize.width > theme.breakpoints.values.tablet
     ? (Math.min(windowSize.width, 1200)- 48)*0.666666
-      : windowSize.width > theme.breakpoints.values.sm
+      : windowSize.width > theme.breakpoints.values.mobile
         ? windowSize.width - 48
         : windowSize.width - 32
 

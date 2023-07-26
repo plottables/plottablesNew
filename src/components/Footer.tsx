@@ -2,9 +2,9 @@ import { Box, Link, Typography } from "@mui/material"
 
 const Footer = () => {
   return (
-    <Box sx={{position: "absolute", bottom: "0", display: "flex", justifyContent: "space-between", width: "calc(100% - 70px)"}}>
+    <Box sx={{position: "absolute", bottom: "0", display: "flex", justifyContent: {mobile: "center", tablet: "space-between"}, width: "calc(100% - 70px)"}}>
 
-      <Box sx={{display: "flex", textAlign: "left"}}>
+      <Box sx={{display: {mobile: "none", tablet: "flex"}, textAlign: "left"}}>
         <Link href={"/termsOfUse"} paddingRight={"25px"} underline={"hover"}>
           <Typography variant={"h6"}>Terms of Use</Typography>
         </Link>
@@ -28,7 +28,7 @@ const Footer = () => {
         </Link>
       </Box>
 
-      <Box sx={{display: "flex", textAlign: "right"}}>
+      <Box sx={{display: {mobile: "none", tablet: "flex"}, textAlign: "right"}}>
         <Link href={"https://www.artblocksengine.io/"} target={"_blank"} underline={"hover"}>
           <Typography variant={"h6"}>Art Blocks Engine</Typography>
         </Link>

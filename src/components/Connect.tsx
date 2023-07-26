@@ -2,7 +2,11 @@ import { ConnectButton } from "@rainbow-me/rainbowkit"
 import Box from "@mui/material/Box"
 import { Button, Link } from "@mui/material"
 
-const Connect = () => {
+interface Props {
+  isMobile: boolean
+}
+
+const Connect = ({ isMobile = false }: Props) => {
   return (
     <Box>
       <ConnectButton.Custom>
@@ -54,17 +58,17 @@ const Connect = () => {
                 }
 
                 return (
-                  <div style={{ display: 'flex', gap: 20 }}>
-                    <Button onClick={openAccountModal} type="button" sx={{color: "blue"}}>
+                  <Box sx={{ display: "flex", gap: {mobile: "10px", tablet: "20px"}, flexDirection: {mobile: "column", tablet: "row"}, justifyContent: {mobile: "left", tablet: "right"} }}>
+                    <Button onClick={openAccountModal} type="button" sx={{color: "blue", justifyContent: {mobile: "left", tablet: "center"}}}>
                       {account.displayName}
-                      {account.displayBalance
+                      {account.displayBalance && !isMobile
                         ? ` (${account.displayBalance})`
                         : ''}
                     </Button>
                     <Link href={`/user/${account.address}`} underline="hover" sx={{color: "blue"}}>
                       My NFTs
                     </Link>
-                  </div>
+                  </Box>
                 );
               })()}
             </div>

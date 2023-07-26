@@ -71,7 +71,7 @@ const OwnedTokens = ({
   // todo: need to fix this to properly size thumbnails for mobile
   let width = 280
   if (windowSize && !isNaN(windowSize.width)) {
-    width = windowSize.width > theme.breakpoints.values.md
+    width = windowSize.width > theme.breakpoints.values.tablet
       ? (Math.min(windowSize.width, 1200)-96) / 3
       : (windowSize.width-60) / 2
   }

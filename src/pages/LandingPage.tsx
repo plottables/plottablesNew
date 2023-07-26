@@ -10,7 +10,7 @@ const LandingPage = () => {
     <Page>
       <Box>
 
-        <Box sx={{display: "flex", width: "100%", justifyContent: "space-around", marginY: "100px"}}>
+        <Box sx={{display: "flex", width: "100%", justifyContent: "space-around", marginY: {xs: "25px", sm: "50px", md: "100px"}}}>
           <Logo/>
         </Box>
 

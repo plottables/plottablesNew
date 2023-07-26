@@ -46,7 +46,16 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
         </Link>
         <ProjectStatusBadge complete={project.complete} paused={project.paused} startTime={project?.minterConfiguration?.startTime} />
       </Box>
-      <Box sx={{display: "flex", justifyContent: "space-between"}}>
+      <Box sx={{display: {xs: "block", sm: "block", md: "flex"}, justifyContent: "space-between", flexDirection: "row-reverse"}}>
+        <Box sx={{display: "flex", justifyContent: "center", marginLeft: {xs: "25px", sm: "50px", md: "100px"}}}>
+          <TokenView
+            contractAddress={project.contract.id}
+            tokenId={token?.tokenId}
+            width={width}
+            invocation={token?.invocation}
+            aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
+          />
+        </Box>
         <Box sx={{paddingLeft: "25px"}}>
           <Typography><br/></Typography>
           <Typography>Release Date: {releaseDateFormatted}</Typography>
@@ -55,15 +64,6 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
               <ReactMarkdown className="markdown">{project.description}</ReactMarkdown>
             )
           }
-        </Box>
-        <Box sx={{marginX: "100px"}}>
-          <TokenView
-            contractAddress={project.contract.id}
-            tokenId={token?.tokenId}
-            width={500}
-            invocation={token?.invocation}
-            aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
-          />
         </Box>
       </Box>
       <Typography><br/></Typography>

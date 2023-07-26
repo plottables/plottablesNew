@@ -14,6 +14,17 @@ declare module "@mui/material/styles" {
   interface PaletteOptions {
     upcoming: PaletteColor
   }
+  interface BreakpointOverrides {
+    xs: false; // removes the `xs` breakpoint
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    mobile: true; // adds the `mobile` breakpoint
+    tablet: true;
+    laptop: true;
+    desktop: true;
+  }
 }
 
 declare module "@mui/material/Chip" {
@@ -55,6 +66,14 @@ const theme = createTheme({
       }
     })
   },
+  breakpoints: {
+    values: {
+      mobile: 0,
+      tablet: 640,
+      laptop: 1024,
+      desktop: 1200,
+    },
+  },
   typography: {
     fontFamily: [
       "Gochi Hand",
@@ -83,6 +102,23 @@ const theme = createTheme({
       }
     },
     MuiButton: {
+      styleOverrides: {
+        root: {
+          background: "none",
+          color: "inherit",
+          border: "none",
+          padding: "0",
+          font: "inherit",
+          cursor: "pointer",
+          outline: "inherit",
+          '&:hover': {
+            backgroundColor: 'transparent',
+            textDecoration: "underline"
+          },
+        }
+      }
+    },
+    MuiIconButton: {
       styleOverrides: {
         root: {
           background: "none",
