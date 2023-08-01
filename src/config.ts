@@ -11,16 +11,11 @@ export const CONTRACT_INFO = EXPECTED_CHAIN_ID === 1 ? mainnetContractConfig : t
 export const MERKLE_PROOF_API_URL = process.env.REACT_APP_MERKLE_PROOF_API_URL || ""
 export const HOLDER_PROOF_API_URL = process.env.REACT_APP_HOLDER_PROOF_API_URL || ""
 
-
-interface contractCalendar {
-  [projectId: number]: string;
-}
-
-interface calendar {
-  [contractAddress: string]: contractCalendar;
-}
-
-export const CALENDAR: calendar = {
+export const CALENDAR: {
+  [contractAddress: string]: {
+    [projectId: number]: string;
+  };
+} = {
   "0xa319c382a702682129fcbf55d514e61a16f97f9c": {
     0: "12/10/2021 2:00:00 PM EST",
     1: "12/10/2021 2:00:00 PM EST",
@@ -51,7 +46,13 @@ export const CALENDAR: calendar = {
   }
 }
 
-export const ARTFORA_CONFIG = {
+export const ARTFORA_CONFIG: {
+  collection_base_url: string;
+  token_base_url: string;
+  projects: {
+    [projectId: string]: string;
+  };
+} = {
   collection_base_url: "https://www.artfora.com/collections",
   token_base_url: "https://www.artfora.com/assets",
   projects: {
