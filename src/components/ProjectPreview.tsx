@@ -7,7 +7,7 @@ import { Project } from "utils/types"
 import { parseAspectRatio } from "utils/scriptJSON"
 import TokenView from "components/TokenView"
 import ReactMarkdown from "react-markdown";
-import { CALENDAR } from "../config";
+import {CALENDAR, EXPECTED_CHAIN_ID} from "../config";
 import LineBreak from "./LineBreak";
 import ProjectStatusBadge from "./ProjectStatusBadge";
 
@@ -23,17 +23,17 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
   }
 
   // let releaseDate = project.minterConfiguration?.startTime;
-  let releaseDate = null;
-  if (!releaseDate) {
-    releaseDate = new Date(CALENDAR[project.contract.id.toLowerCase()][Number(project.projectId)])
+  let releaseDateFormatted = "TBD"
+  if (EXPECTED_CHAIN_ID === 1) {
+    const releaseDate = new Date(CALENDAR[project.contract.id.toLowerCase()][Number(project.projectId)])
+    releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZoneName: "short",
+        hour: "numeric",
+      });
   }
-  const releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZoneName: "short",
-    hour: "numeric",
-  });
 
   const token = project?.tokens[0]
   return (

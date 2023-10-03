@@ -15,7 +15,7 @@ import {
   Alert,
   Link
 } from "@mui/material"
-import {CALENDAR, PROJECTS_PER_PAGE, TOKENS_PER_PAGE} from "config"
+import {CALENDAR, EXPECTED_CHAIN_ID, PROJECTS_PER_PAGE, TOKENS_PER_PAGE} from "config"
 import { OrderDirection } from "utils/types"
 import { parseScriptType, parseAspectRatio } from "utils/scriptJSON"
 import ProjectDate from "components/ProjectDate"
@@ -54,17 +54,16 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
         : windowSize.width - 32
   const contractConfig = getContractConfigByAddress(contractAddress)
 
-  let releaseDate = null
-  let releaseDateFormatted = null
-  if (project && !releaseDate) {
-    releaseDate = new Date(CALENDAR[project?.contract.id.toLowerCase()][Number(project?.projectId)])
-    releaseDateFormatted = releaseDate.toLocaleString("en-US", {
+  let releaseDateFormatted = "TBD"
+  if (EXPECTED_CHAIN_ID === 1) {
+    const releaseDate = new Date(CALENDAR[project?.contract.id.toLowerCase()][Number(project.projectId)])
+    releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
       timeZoneName: "short",
       hour: "numeric",
-    })
+    });
   }
 
   if (error) {
