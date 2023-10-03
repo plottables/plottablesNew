@@ -1,14 +1,14 @@
 {
   "rewrites": [
     {
-      "source": "/ifd",
+      "source": "/:path*",
       "has": [
         {
           "type": "host",
-          "value": "new.plottables.io"
+          "value": "instructions.new.plottables.io"
         }
       ],
-      "destination": "https://new.plottables.io/project/0x18de6097ce5b5b2724c9cae6ac519917f3f178c0/0"
+      "destination": "/project/0x18de6097ce5b5b2724c9cae6ac519917f3f178c0/0"
     }
   ]
 }
