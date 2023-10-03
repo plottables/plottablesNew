@@ -5,10 +5,10 @@
       "has": [
         {
           "type": "host",
-          "value": "instructions.new.plottables.io"
+          "value": "instructions.plottables.io"
         }
       ],
-      "destination": "https://new.plottables.io/project/0x18de6097ce5b5b2724c9cae6ac519917f3f178c0/0"
+      "destination": "https://plottables.io/project/0x18de6097ce5b5b2724c9cae6ac519917f3f178c0/0"
     }
   ]
 }
