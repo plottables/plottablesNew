@@ -5,7 +5,7 @@
       "has": [
         {
           "type": "host",
-          "value": "ifd.plottables.io"
+          "value": "ifd.new.plottables.io"
         }
       ],
       "destination": "/project/0x18de6097ce5b5b2724c9cae6ac519917f3f178c0/0"
