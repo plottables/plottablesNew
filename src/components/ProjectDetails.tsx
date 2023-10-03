@@ -55,8 +55,8 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
   const contractConfig = getContractConfigByAddress(contractAddress)
 
   let releaseDateFormatted = "TBD"
-  if (EXPECTED_CHAIN_ID === 1) {
-    const releaseDate = new Date(CALENDAR[project?.contract.id.toLowerCase()][Number(project.projectId)])
+  if (EXPECTED_CHAIN_ID === 1 && project) {
+    const releaseDate = new Date(CALENDAR[project?.contract.id.toLowerCase()][Number(project?.projectId)])
     releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
