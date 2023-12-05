@@ -109,14 +109,16 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
         justifyContent: "space-around"
       }}>
         <Box sx={{paddingX: {mobile: "0px", tablet: "100px"}}}>
-          <TokenView
-            contractAddress={contractConfig?.CORE_CONTRACT_ADDRESS}
-            tokenId={token.tokenId}
-            width={windowSize.width > theme.breakpoints.values.tablet ? Math.min(windowSize.width / 3, 600) : 0.8 * windowSize.width}
-            invocation={token.invocation}
-            aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
-            live
-          />
+          {token && token.tokenId && (
+              <TokenView
+                contractAddress={contractConfig?.CORE_CONTRACT_ADDRESS}
+                tokenId={token.tokenId}
+                width={windowSize.width > theme.breakpoints.values.tablet ? Math.min(windowSize.width / 3, 600) : 0.8 * windowSize.width}
+                invocation={token.invocation}
+                aspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
+                live
+              />
+          )}
         </Box>
         <Box sx={{
           display: "flex",

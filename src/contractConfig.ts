@@ -27,7 +27,7 @@ export const testnetContractConfig = [
     "MEDIA_URL": "https://plottables-goerli.s3.amazonaws.com",
     "TOKEN_URL": "https://token.staging.artblocks.io",
     "GENERATOR_URL": "https://generator-staging-goerli.artblocks.io",
-    "EDIT_PROJECT_URL": "https://artist-staging.artblocks.io/engine/fullyonchain/projects"
+    "EDIT_PROJECT_URL": "https://goerli-artist-staging.artblocks.io/engine/fullyonchain/projects"
   },
   {
     "CONTRACT_VERSION": "V2",
@@ -36,7 +36,7 @@ export const testnetContractConfig = [
     "MEDIA_URL": "https://plottables-flex-goerli.s3.amazonaws.com",
     "TOKEN_URL": "https://token.staging.artblocks.io",
     "GENERATOR_URL": "https://generator-staging-goerli.artblocks.io",
-    "EDIT_PROJECT_URL": "https://artist-staging.artblocks.io/engine/flex/projects"
+    "EDIT_PROJECT_URL": "https://goerli-artist-staging.artblocks.io/engine/flex/projects"
   },
   {
     "CONTRACT_VERSION": "V3",
@@ -45,6 +45,6 @@ export const testnetContractConfig = [
     "MEDIA_URL": "https://plottablesv3-goerli.s3.amazonaws.com",
     "TOKEN_URL": "https://token.staging.artblocks.io",
     "GENERATOR_URL": "https://generator-staging-goerli.artblocks.io",
-    "EDIT_PROJECT_URL": "https://artist-staging.artblocks.io/engine/fullyonchain/projects"
+    "EDIT_PROJECT_URL": "https://goerli-artist-staging.artblocks.io/engine/fullyonchain/projects"
   }
 ]
