@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useContractRead } from "wagmi"
 import { BigNumber } from "ethers"
-import MinterFilterV1ABI from "abi/V3/MinterFilterV1.json"
+import MinterFilterV2ABI from "abi/V3/MinterFilterV2.json"
 import { getMintingInterface } from "utils/getMintingInterface"
 
 interface Props {
@@ -27,9 +27,9 @@ const MintingInterfaceFilter = (
     const [v3ProjectAndMinterInfo, setV3ProjectAndMinterInfo] = useState<any | null>(null)
     const { data, isError, isLoading } = useContractRead({
       address: mintContractAddress as `0x${string}`,
-      abi: MinterFilterV1ABI,
-      functionName: "getProjectAndMinterInfoAt",
-      args: [BigNumber.from(projectId)],
+      abi: MinterFilterV2ABI,
+      functionName: "getProjectAndMinterInfoOnContractAt",
+      args: [coreContractAddress, BigNumber.from(projectId)],
       enabled: contractVersion === "V3",
       watch: true,
       onSuccess(data) {
@@ -41,8 +41,7 @@ const MintingInterfaceFilter = (
       return null
     }
 
-    let minterType = null
-    let minterAddress = mintContractAddress
+    let [minterType, minterAddress] = [null, mintContractAddress]
     if (contractVersion === "V3") {
       if (!data || !v3ProjectAndMinterInfo || isLoading || isError) return null
       minterType = v3ProjectAndMinterInfo?.minterType

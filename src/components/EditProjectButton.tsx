@@ -11,11 +11,7 @@ interface Props {
 
 const EditProjectButton = ({contractAddress, projectId, editProjectUrl}: Props) => {
     return (
-        <Button
-            onClick={() =>
-                window.open(`${editProjectUrl}/${contractAddress}/${projectId}`, '_blank')
-            }
-        >
+        <Button onClick={() => window.open(`${editProjectUrl}/${contractAddress}-${projectId}`, '_blank') }>
             <Typography variant={"h2"}>
                 {"Edit Project"}
             </Typography>

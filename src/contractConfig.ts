@@ -16,35 +16,26 @@ export const mainnetContractConfig = [
     "TOKEN_URL": "https://token.artblocks.io",
     "GENERATOR_URL": "https://generator.artblocks.io",
     "EDIT_PROJECT_URL": "https://artblocks.io/engine/flex/projects"
+  },
+  {
+    "CONTRACT_VERSION": "V3",
+    "CORE_CONTRACT_ADDRESS": "0xAc521EA7A83a3Bc3f9f1e09F8300a6301743fB1f",
+    "MINT_CONTRACT_ADDRESS": "0xa2ccfE293bc2CDD78D8166a82D1e18cD2148122b",
+    "MEDIA_URL": "https://plottables-sepolia.s3.amazonaws.com",
+    "TOKEN_URL": "https://token.staging.artblocks.io",
+    "GENERATOR_URL": "https://generator-staging-sepolia.artblocks.io",
+    "EDIT_PROJECT_URL": "https://create.artblocks.io/projects"
   }
 ]
 
 export const testnetContractConfig = [
   {
-    "CONTRACT_VERSION": "V2",
-    "CORE_CONTRACT_ADDRESS": "0x9B0c67496Be8c6422fED0372be7a87707e3a6F09",
-    "MINT_CONTRACT_ADDRESS": "0x068C519D00A60CCD1830fabfe6eC428F2FDb4146",
-    "MEDIA_URL": "https://plottables-goerli.s3.amazonaws.com",
-    "TOKEN_URL": "https://token.staging.artblocks.io",
-    "GENERATOR_URL": "https://generator-staging-goerli.artblocks.io",
-    "EDIT_PROJECT_URL": "https://goerli-artist-staging.artblocks.io/engine/fullyonchain/projects"
-  },
-  {
-    "CONTRACT_VERSION": "V2",
-    "CORE_CONTRACT_ADDRESS": "0x48742D38a0809135EFd643c1150BfC13768C3907",
-    "MINT_CONTRACT_ADDRESS": "0x1DEC9E52f1320F7Deb29cBCd7B7d67f3dF785142",
-    "MEDIA_URL": "https://plottables-flex-goerli.s3.amazonaws.com",
-    "TOKEN_URL": "https://token.staging.artblocks.io",
-    "GENERATOR_URL": "https://generator-staging-goerli.artblocks.io",
-    "EDIT_PROJECT_URL": "https://goerli-artist-staging.artblocks.io/engine/flex/projects"
-  },
-  {
     "CONTRACT_VERSION": "V3",
-    "CORE_CONTRACT_ADDRESS": "0xCEd5350f5a2Ba24946F92C08260931CFf65dc954",
-    "MINT_CONTRACT_ADDRESS": "0x0AB754254d7243315FFFDC363a6A0997aD9c3118",
-    "MEDIA_URL": "https://plottablesv3-goerli.s3.amazonaws.com",
+    "CORE_CONTRACT_ADDRESS": "0x9f22B52702E1C00B1318e1DACd543c17aD00774D",
+    "MINT_CONTRACT_ADDRESS": "0xa07f47c30C262adcC263A4D44595972c50e04db7",
+    "MEDIA_URL": "https://plottables-sepolia.s3.amazonaws.com",
     "TOKEN_URL": "https://token.staging.artblocks.io",
-    "GENERATOR_URL": "https://generator-staging-goerli.artblocks.io",
-    "EDIT_PROJECT_URL": "https://goerli-artist-staging.artblocks.io/engine/fullyonchain/projects"
+    "GENERATOR_URL": "https://generator-staging-sepolia.artblocks.io",
+    "EDIT_PROJECT_URL": "https://create.artblocks.io/projects"
   }
 ]

@@ -3,10 +3,10 @@ import { useAccount, useBalance, useContractReads } from "wagmi"
 import { BigNumber, utils } from "ethers"
 import { Box } from "@mui/material"
 import GenArt721CoreV3_EngineABI from "abi/V3/GenArt721CoreV3_Engine.json"
-import MinterSetPriceV4ABI from "abi/V3/MinterSetPriceV4.json"
+import MinterSetPriceV5ABI from "abi/V3/MinterSetPriceV5.json"
 import MintingProgress from "components/MintingProgress"
 import MintingPrice from "components/MintingPrice"
-import MinterSetPriceV4Button from "components/MinterButtons/MinterSetPriceV4Button"
+import MinterSetPriceV5Button from "components/MinterButtons/MinterSetPriceV5Button"
 
 interface Props {
   coreContractAddress: string,
@@ -16,7 +16,7 @@ interface Props {
   scriptAspectRatio: number
 }
 
-const MinterSetPriceV4Interface = (
+const MinterSetPriceV5Interface = (
   {
     coreContractAddress,
     mintContractAddress,
@@ -33,7 +33,7 @@ const MinterSetPriceV4Interface = (
 
   const [projectStateData, setProjectStateData] = useState<any | null>(null)
   const [projectPriceInfo, setProjectPriceInfo] = useState<any | null>(null)
-  const [projectConfig, setProjectConfig] = useState<any | null>(null)
+  const [projectMaxHasBeenInvoked, setProjectMaxHasBeenInvoked] = useState<any | null>(null)
 
   const { data, isError, isLoading } = useContractReads({
     contracts: [
@@ -45,61 +45,67 @@ const MinterSetPriceV4Interface = (
       },
       {
         address: mintContractAddress as `0x${string}`,
-        abi: MinterSetPriceV4ABI,
+        abi: MinterSetPriceV5ABI,
         functionName: "getPriceInfo",
-        args: [BigNumber.from(projectId)]
+        args: [BigNumber.from(projectId), coreContractAddress]
       },
       {
         address: mintContractAddress as `0x${string}`,
-        abi: MinterSetPriceV4ABI,
-        functionName: "projectConfig",
-        args: [BigNumber.from(projectId)]
+        abi: MinterSetPriceV5ABI,
+        functionName: "projectMaxHasBeenInvoked",
+        args: [BigNumber.from(projectId), coreContractAddress]
       }
     ],
     watch: true,
     onSuccess(data) {
       setProjectStateData(data[0])
       setProjectPriceInfo(data[1])
-      setProjectConfig(data[2])
+      setProjectMaxHasBeenInvoked(data[2])
     }
   })
 
-  if (!data || !projectStateData || !projectPriceInfo || !projectConfig || isLoading || isError) {
+  if (!data || !projectStateData || !projectPriceInfo || isLoading || isError) {
     return null
   }
 
+  const isArtist = account.isConnected && account.address?.toLowerCase() === artistAddress?.toLowerCase()
+  const isNotArtist = account.isConnected && account.address?.toLowerCase() !== artistAddress?.toLowerCase()
+
   const invocations = projectStateData.invocations.toNumber()
   const maxInvocations = projectStateData.maxInvocations.toNumber()
-  const maxHasBeenInvoked = projectConfig.maxHasBeenInvoked
+  const isPaused = projectStateData.paused
+
   const currencySymbol = projectPriceInfo.currencySymbol
   const currentPriceWei = projectPriceInfo.tokenPriceInWei
   const priceIsConfigured = projectPriceInfo.isConfigured
+
+  const maxHasBeenInvoked = projectMaxHasBeenInvoked
+
   const isSoldOut = maxHasBeenInvoked || invocations >= maxInvocations
-  const isPaused = projectStateData.paused
-  const isArtist = account.isConnected && account.address?.toLowerCase() === artistAddress?.toLowerCase()
-  const isNotArtist = account.isConnected && account.address?.toLowerCase() !== artistAddress?.toLowerCase()
   const artistCanMint = isArtist && priceIsConfigured && !isSoldOut
   const anyoneCanMint = isNotArtist && priceIsConfigured && !isSoldOut && !isPaused
 
   return (
-    <Box>
-      <MintingProgress
-        invocations={invocations}
-        maxInvocations={maxInvocations}
-        maxHasBeenInvoked={maxHasBeenInvoked}
-      />
-      {
-        priceIsConfigured &&
-        (
-          <MintingPrice
-            startPriceWei={currentPriceWei}
-            currentPriceWei={currentPriceWei}
-            endPriceWei={currentPriceWei}
-            currencySymbol={currencySymbol}
-          />
-        )
-      }
-      <MinterSetPriceV4Button
+    <Box sx={{display: "flex", flexDirection: "column"}}>
+      <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+        <MintingProgress
+          invocations={invocations}
+          maxInvocations={maxInvocations}
+          maxHasBeenInvoked={maxHasBeenInvoked}
+        />
+        {
+          priceIsConfigured &&
+          (
+            <MintingPrice
+              startPriceWei={currentPriceWei}
+              currentPriceWei={currentPriceWei}
+              endPriceWei={currentPriceWei}
+              currencySymbol={currencySymbol}
+            />
+          )
+        }
+      </Box>
+      <MinterSetPriceV5Button
         coreContractAddress={coreContractAddress}
         mintContractAddress={mintContractAddress}
         projectId={projectId}
@@ -117,4 +123,4 @@ const MinterSetPriceV4Interface = (
   )
 }
 
-export default MinterSetPriceV4Interface
+export default MinterSetPriceV5Interface

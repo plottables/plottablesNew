@@ -10,6 +10,7 @@ interface Props {
   contractAddress: string
   tokenId: string
   width: number
+  retryDelay?: number
   invocation?: BigInt
   aspectRatio?: number
   live?: boolean
@@ -19,19 +20,20 @@ const TokenView = ({
   contractAddress,
   tokenId,
   width,
+  retryDelay=0,
   invocation,
   aspectRatio=1,
   live=false
 }: Props) => {
-  // const height = width / aspectRatio
+
   const lineCount = Math.floor(width / aspectRatio / 25)
   const height = 25 * lineCount
   const newWidth = height * aspectRatio
-  return (
 
+  return (
     <Box>
       {
-          invocation !== undefined &&
+        invocation !== undefined &&
         (
           <Box sx={{width: "100%", display: "flex", justifyContent: "center"}}>
             <Link href={`/token/${contractAddress}/${tokenId}`} sx={{textDecoration: "none"}} underline="hover">
@@ -43,10 +45,10 @@ const TokenView = ({
       <Box width={String(newWidth)+"px"} height={String(height)+"px"} sx={{
         width: "100%",
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "center"
       }}>
         <Link href={`/token/${contractAddress}/${tokenId}`} sx={{textDecoration: "none"}} underline="hover">
-          <TokenImage contractAddress={contractAddress} tokenId={tokenId} width={newWidth} height={height}/>
+          <TokenImage contractAddress={contractAddress} tokenId={tokenId} width={newWidth} height={height} retryDelay={retryDelay}/>
         </Link>
       </Box>
     </Box>

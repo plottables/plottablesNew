@@ -20,6 +20,7 @@ const tokenQuery = (id: string) => `
         artistName
         artistAddress
         scriptJSON
+        aspectRatio
       }
     }
   }`
