@@ -6,10 +6,10 @@ import {
 import { Project } from "utils/types"
 import { parseAspectRatio } from "utils/scriptJSON"
 import TokenView from "components/TokenView"
-import ReactMarkdown from "react-markdown";
 import {CALENDAR, EXPECTED_CHAIN_ID} from "../config";
 import LineBreak from "./LineBreak";
 import ProjectStatusBadge from "./ProjectStatusBadge";
+import ProjectDescription from "./ProjectDescription";
 
 interface Props {
   project: Project
@@ -22,6 +22,7 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
     return null
   }
 
+  console.log(project);
   // let releaseDate = project.minterConfiguration?.startTime;
   let releaseDateFormatted = "TBD"
   if (EXPECTED_CHAIN_ID === 1) {
@@ -72,21 +73,14 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
           />
         </Box>
         <Box sx={{
-          paddingLeft: {mobile: "0px", tablet: "25px"},
-          ".markdown > p": {
-            lineHeight: "25px",
-            fontSize: "20px",
-            letterSpacing: "1px",
-            wordSpacing: "5px",
-            marginTop: "25px",
-            marginBottom: "25px"
-          }
+          paddingLeft: {mobile: "0px", tablet: "25px"}
         }}>
           <Typography><br/></Typography>
           <Typography>Release Date: {releaseDateFormatted}</Typography>
+          <Typography><br/></Typography>
           {
             showDescription && (
-              <ReactMarkdown className="markdown">{project.description}</ReactMarkdown>
+              <ProjectDescription projectId={project.id} projectDescription={project.description} />
             )
           }
         </Box>

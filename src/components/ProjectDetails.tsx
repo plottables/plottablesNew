@@ -32,6 +32,7 @@ import { useAccount } from "wagmi"
 import MintingInterfaceFilter from "components/MintingInterfaceFilter"
 import ReactMarkdown from "react-markdown";
 import LineBreak from "./LineBreak";
+import ProjectDescription from "./ProjectDescription";
 
 interface Props {
   contractAddress: string
@@ -143,7 +144,7 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
             artistAddress={project.artistAddress}
             scriptAspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
           />
-          <ReactMarkdown className="markdown">{project.description}</ReactMarkdown>
+          <ProjectDescription projectId={project.id} projectDescription={project.description} />
         </Box>
       </Box>
 
