@@ -22,7 +22,6 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
     return null
   }
 
-  console.log(project);
   // let releaseDate = project.minterConfiguration?.startTime;
   let releaseDateFormatted = "TBD"
   if (EXPECTED_CHAIN_ID === 1) {

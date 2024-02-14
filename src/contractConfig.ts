@@ -34,7 +34,7 @@ export const testnetContractConfig = [
     "CORE_CONTRACT_ADDRESS": "0x9f22B52702E1C00B1318e1DACd543c17aD00774D",
     "MINT_CONTRACT_ADDRESS": "0xa07f47c30C262adcC263A4D44595972c50e04db7",
     "MEDIA_URL": "https://plottables-sepolia.s3.amazonaws.com",
-    "TOKEN_URL": "https://token.staging.artblocks.io",
+    "TOKEN_URL": "https://token.sepolia.artblocks.io",
     "GENERATOR_URL": "https://generator-staging-sepolia.artblocks.io",
     "EDIT_PROJECT_URL": "https://create.artblocks.io/projects"
   }
