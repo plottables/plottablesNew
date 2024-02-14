@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react"
 import { useAccount, useBalance, useContractReads } from "wagmi"
 import { BigNumber, utils } from "ethers"
-import { Box } from "@mui/material"
+import {Box, Typography} from "@mui/material"
 import GenArt721CoreV3_EngineABI from "abi/V3/GenArt721CoreV3_Engine.json"
 import MintingProgress from "components/MintingProgress"
 import MintingPrice from "components/MintingPrice"
@@ -32,6 +32,7 @@ const MinterSetPriceHolderV5Interface = ({ coreContractAddress, mintContractAddr
       fetch(`${HOLDER_PROOF_API_URL}?contractAddress=${coreContractAddress}&projectId=${projectId}&walletAddress=${account.address}&chainId=${EXPECTED_CHAIN_ID}`)
         .then(response => response.json())
         .then(data => setHolderProof(data))
+        .catch(() => setHolderProof(null))
     }
   }, [account.isConnected, account.address, coreContractAddress, projectId])
 
