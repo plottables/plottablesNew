@@ -20,7 +20,7 @@ const TokenView = ({
   contractAddress,
   tokenId,
   width,
-  retryDelay=0,
+  retryDelay=10000,
   invocation,
   aspectRatio=1,
   live=false

@@ -144,6 +144,7 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
             artistAddress={project.artistAddress}
             scriptAspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
           />
+          <Typography><br/></Typography>
           <ProjectDescription projectId={project.id} projectDescription={project.description} />
         </Box>
       </Box>

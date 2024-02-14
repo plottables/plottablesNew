@@ -1,12 +1,13 @@
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import { useAccount, useBalance, useContractReads } from "wagmi"
 import { BigNumber, utils } from "ethers"
 import { Box } from "@mui/material"
 import GenArt721CoreV3_EngineABI from "abi/V3/GenArt721CoreV3_Engine.json"
-import MinterSetPriceV5ABI from "abi/V3/MinterSetPriceV5.json"
 import MintingProgress from "components/MintingProgress"
 import MintingPrice from "components/MintingPrice"
-import MinterSetPriceV5Button from "components/MinterButtons/MinterSetPriceV5Button"
+import { EXPECTED_CHAIN_ID, HOLDER_PROOF_API_URL } from "config"
+import MinterSetPriceHolderV5ABI from "../../abi/V3/MinterSetPriceHolderV5.json"
+import MinterSetPriceHolderV5Button from "../MinterButtons/MinterSetPriceHolderV5Button"
 
 interface Props {
   coreContractAddress: string,
@@ -16,24 +17,23 @@ interface Props {
   scriptAspectRatio: number
 }
 
-const MinterSetPriceV5Interface = (
-  {
-    coreContractAddress,
-    mintContractAddress,
-    projectId,
-    artistAddress,
-    scriptAspectRatio
-  }: Props
-) => {
+const MinterSetPriceHolderV5Interface = ({ coreContractAddress, mintContractAddress, projectId, artistAddress, scriptAspectRatio }: Props) => {
 
   const account = useAccount()
-  const balance = useBalance({
-    address: account.address
-  })
+  const balance = useBalance({address: account.address })
 
   const [projectStateData, setProjectStateData] = useState<any | null>(null)
   const [projectPriceInfo, setProjectPriceInfo] = useState<any | null>(null)
   const [projectMaxHasBeenInvoked, setProjectMaxHasBeenInvoked] = useState<any | null>(null)
+  const [holderProof, setHolderProof] = useState<any | null>(null)
+
+  useEffect(() => {
+    if (account.isConnected) {
+      fetch(`${HOLDER_PROOF_API_URL}?contractAddress=${coreContractAddress}&projectId=${projectId}&walletAddress=${account.address}&chainId=${EXPECTED_CHAIN_ID}`)
+        .then(response => response.json())
+        .then(data => setHolderProof(data))
+    }
+  }, [account.isConnected, account.address, coreContractAddress, projectId])
 
   const { data, isError, isLoading } = useContractReads({
     contracts: [
@@ -45,13 +45,13 @@ const MinterSetPriceV5Interface = (
       },
       {
         address: mintContractAddress as `0x${string}`,
-        abi: MinterSetPriceV5ABI,
+        abi: MinterSetPriceHolderV5ABI,
         functionName: "getPriceInfo",
         args: [BigNumber.from(projectId), coreContractAddress]
       },
       {
         address: mintContractAddress as `0x${string}`,
-        abi: MinterSetPriceV5ABI,
+        abi: MinterSetPriceHolderV5ABI,
         functionName: "projectMaxHasBeenInvoked",
         args: [BigNumber.from(projectId), coreContractAddress]
       }
@@ -101,7 +101,7 @@ const MinterSetPriceV5Interface = (
           )
         }
       </Box>
-      <MinterSetPriceV5Button
+      <MinterSetPriceHolderV5Button
         coreContractAddress={coreContractAddress}
         mintContractAddress={mintContractAddress}
         projectId={projectId}
@@ -114,9 +114,11 @@ const MinterSetPriceV5Interface = (
         verifyBalance={balance?.data?.formatted! >= utils.formatEther(projectPriceInfo.tokenPriceInWei.toString())}
         isPaused={isPaused}
         isSoldOut={isSoldOut}
+        holderContractAddress={holderProof?.contractAddress}
+        holderTokenId={holderProof?.tokenId}
       />
     </Box>
   )
 }
 
-export default MinterSetPriceV5Interface
+export default MinterSetPriceHolderV5Interface
