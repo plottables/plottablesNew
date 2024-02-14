@@ -25,14 +25,18 @@ const MinterSetPriceHolderV5Interface = ({ coreContractAddress, mintContractAddr
   const [projectStateData, setProjectStateData] = useState<any | null>(null)
   const [projectPriceInfo, setProjectPriceInfo] = useState<any | null>(null)
   const [projectMaxHasBeenInvoked, setProjectMaxHasBeenInvoked] = useState<any | null>(null)
+  const [holderProofLoading, setHolderProofLoading] = useState<any | null>(true)
   const [holderProof, setHolderProof] = useState<any | null>(null)
 
   useEffect(() => {
     if (account.isConnected) {
       fetch(`${HOLDER_PROOF_API_URL}?contractAddress=${coreContractAddress}&projectId=${projectId}&walletAddress=${account.address}&chainId=${EXPECTED_CHAIN_ID}`)
-        .then(response => response.json())
-        .then(data => setHolderProof(data))
-        .catch(() => setHolderProof(null))
+        .then((response) => {
+          setHolderProofLoading(false)
+          return response.json()
+        })
+        .then((data) => { setHolderProof(data) })
+        .catch(() => { setHolderProof(null) })
     }
   }, [account.isConnected, account.address, coreContractAddress, projectId])
 
@@ -115,6 +119,7 @@ const MinterSetPriceHolderV5Interface = ({ coreContractAddress, mintContractAddr
         verifyBalance={balance?.data?.formatted! >= utils.formatEther(projectPriceInfo.tokenPriceInWei.toString())}
         isPaused={isPaused}
         isSoldOut={isSoldOut}
+        holderProofLoading={holderProofLoading}
         holderContractAddress={holderProof?.contractAddress}
         holderTokenId={holderProof?.tokenId}
       />

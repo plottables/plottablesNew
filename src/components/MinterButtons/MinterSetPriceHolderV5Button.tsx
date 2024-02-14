@@ -22,6 +22,7 @@ interface Props {
   verifyBalance: boolean,
   isPaused: boolean,
   isSoldOut: boolean,
+  holderProofLoading: boolean,
   holderContractAddress: string,
   holderTokenId: string
 }
@@ -40,6 +41,7 @@ const MinterSetPriceHolderV5Button = (
     verifyBalance,
     isPaused,
     isSoldOut,
+    holderProofLoading,
     holderContractAddress,
     holderTokenId
   }: Props
@@ -97,9 +99,10 @@ const MinterSetPriceHolderV5Button = (
     }
   })
 
-  const mintingDisabled = isPaused || isSoldOut || !isConnected || !verifyBalance || holderContractAddress === undefined
+  const mintingDisabled = isPaused || isSoldOut || !isConnected || !verifyBalance || holderProofLoading || holderContractAddress === undefined
   let mintingMessage = `${artistCanMint ? "Artist Mint " : "Purchase "} for ${formatEtherFixed(priceWei.toString(), 3)} ${currencySymbol}`
-  if (holderContractAddress === undefined) mintingMessage = "Not on Holder List"
+  if (holderProofLoading) mintingMessage = "Checking Holder Proof..."
+  else if (holderContractAddress === undefined) mintingMessage = "Holder Proof Not Found"
   if (isPaused && !artistCanMint) mintingMessage = "minting paused"
   else if (isSoldOut) mintingMessage = "sold out"
   else if (!isConnected) mintingMessage = "connect to purchase"
