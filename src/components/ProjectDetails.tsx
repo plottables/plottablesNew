@@ -57,14 +57,18 @@ const ProjectDetails = ({ contractAddress, id }: Props) => {
 
   let releaseDateFormatted = "TBD"
   if (EXPECTED_CHAIN_ID === 1 && project) {
-    const releaseDate = new Date(CALENDAR[project?.contract.id.toLowerCase()][Number(project?.projectId)])
-    releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      timeZoneName: "short",
-      hour: "numeric",
-    });
+    if (Object.hasOwn(CALENDAR, project?.contract.id.toLowerCase())) {
+      if (Object.hasOwn(CALENDAR[project?.contract.id.toLowerCase()], Number(project?.projectId))) {
+        const releaseDate = new Date(CALENDAR[project?.contract.id.toLowerCase()][Number(project?.projectId)])
+        releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          timeZoneName: "short",
+          hour: "numeric",
+        });
+      }
+    }
   }
 
   if (error) {

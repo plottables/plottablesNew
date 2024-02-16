@@ -22,8 +22,8 @@ export const mainnetContractConfig = [
     "CORE_CONTRACT_ADDRESS": "0xAc521EA7A83a3Bc3f9f1e09F8300a6301743fB1f",
     "MINT_CONTRACT_ADDRESS": "0xa2ccfE293bc2CDD78D8166a82D1e18cD2148122b",
     "MEDIA_URL": "https://plottables-sepolia.s3.amazonaws.com",
-    "TOKEN_URL": "https://token.staging.artblocks.io",
-    "GENERATOR_URL": "https://generator-staging-sepolia.artblocks.io",
+    "TOKEN_URL": "https://token.artblocks.io",
+    "GENERATOR_URL": "https://generator.artblocks.io",
     "EDIT_PROJECT_URL": "https://create.artblocks.io/projects"
   }
 ]
