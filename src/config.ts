@@ -16,6 +16,9 @@ export const CALENDAR: {
     [projectId: number]: string;
   };
 } = {
+  "0xac521ea7a83a3bc3f9f1e09f8300a6301743fb1f": {
+    0: "3/6/2024 10:00:00 AM EST"
+  },
   "0xa319c382a702682129fcbf55d514e61a16f97f9c": {
     0: "12/10/2021 2:00:00 PM EST",
     1: "12/10/2021 2:00:00 PM EST",
