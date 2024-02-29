@@ -25,6 +25,17 @@ const ProjectDescription = ({ projectId, projectDescription }: Props) => {
       ".markdown > p:last-child": { marginTop: "0px" },
       ".markdown > h4:last-of-type": { marginBottom: "0px" }
     }
+  } else if (projectId.toLowerCase() === "0xac521ea7a83a3bc3f9f1e09f8300a6301743fb1f-0") {
+    customMarkdownStyle = {
+      ".markdown > p, .markdown > h4, .markdown > ul": {
+        lineHeight: "25px",
+        fontSize: "20px",
+        letterSpacing: "1px",
+        wordSpacing: "5px",
+        marginTop: "0px",
+        marginBottom: "25px"
+      }
+    }
   } else {
     customMarkdownStyle = {
       ".markdown > p": {
