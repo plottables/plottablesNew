@@ -2,13 +2,14 @@ import CssBaseline from "@mui/material/CssBaseline"
 import "@rainbow-me/rainbowkit/styles.css"
 import { ThemeProvider } from "@mui/material/styles"
 import theme from "theme"
-import { RainbowKitProvider, getDefaultWallets, midnightTheme } from "@rainbow-me/rainbowkit"
+import {RainbowKitProvider, getDefaultWallets, midnightTheme, connectorsForWallets} from "@rainbow-me/rainbowkit"
 import {configureChains, createClient, WagmiConfig} from "wagmi"
 import { mainnet, sepolia } from 'wagmi/chains'
 import { infuraProvider } from "wagmi/providers/infura"
 import { publicProvider } from "wagmi/providers/public"
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { GRAPHQL_URL, INFURA_KEY, EXPECTED_CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from "config"
+import { ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
 
 const client = new ApolloClient({
   uri: GRAPHQL_URL,
@@ -27,11 +28,16 @@ const { chains, provider, webSocketProvider } = configureChains(
   ]
 )
 
-const { connectors } = getDefaultWallets({
+const { wallets } = getDefaultWallets({
   appName: "Engine",
   chains,
   projectId: WALLET_CONNECT_PROJECT_ID
 })
+
+const connectors = connectorsForWallets([
+  ...wallets,
+  { groupName: 'Popular', wallets: [ledgerWallet({ projectId: WALLET_CONNECT_PROJECT_ID, chains })] }
+])
 
 const wagmiClient = createClient({
   autoConnect: true,
