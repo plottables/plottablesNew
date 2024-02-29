@@ -25,14 +25,19 @@ const ProjectPreview = ({project, width=280, showDescription=false}: Props) => {
   // let releaseDate = project.minterConfiguration?.startTime;
   let releaseDateFormatted = "TBD"
   if (EXPECTED_CHAIN_ID === 1) {
-    const releaseDate = new Date(CALENDAR[project.contract.id.toLowerCase()][Number(project.projectId)])
-    releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        timeZoneName: "short",
-        hour: "numeric",
-      });
+    const contractCalendar = CALENDAR[project.contract.id.toLowerCase()]
+    if (contractCalendar) {
+      const releaseDate = new Date(contractCalendar[Number(project.projectId)])
+      if (releaseDate) {
+        releaseDateFormatted = releaseDate?.toLocaleString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZoneName: "short",
+            hour: "numeric",
+          });
+      }
+    }
   }
 
   const token = project?.tokens[0]
