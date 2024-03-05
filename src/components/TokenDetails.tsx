@@ -124,6 +124,11 @@ const TokenDetails = ({ contractAddress, id }: Props) => {
               View on Etherscan
             </Typography>
           </Link>
+          <Link href={`https://sansa.xyz/asset/${contractAddress?.toLowerCase()}/${tokenId}`} target={"_blank"} underline={"hover"}>
+            <Typography variant={"h6"}>
+              View on Sansa
+            </Typography>
+          </Link>
           <Link href={`https://opensea.io/assets/ethereum/${contractAddress?.toLowerCase()}/${tokenId}`} target={"_blank"} underline={"hover"}>
             <Typography variant={"h6"}>
               View on OpenSea
