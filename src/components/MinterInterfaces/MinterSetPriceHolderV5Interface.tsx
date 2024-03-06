@@ -8,6 +8,7 @@ import MintingPrice from "components/MintingPrice"
 import { EXPECTED_CHAIN_ID, HOLDER_PROOF_API_URL } from "config"
 import MinterSetPriceHolderV5ABI from "../../abi/V3/MinterSetPriceHolderV5.json"
 import MinterSetPriceHolderV5Button from "../MinterButtons/MinterSetPriceHolderV5Button"
+import { useLocalStorage } from "usehooks-ts";
 
 interface Props {
   coreContractAddress: string,
@@ -22,6 +23,7 @@ const MinterSetPriceHolderV5Interface = ({ coreContractAddress, mintContractAddr
   const account = useAccount()
   const balance = useBalance({address: account.address })
 
+  const [localHolderProof, setLocalHolderProof] = useLocalStorage<any | null>(`holderProof`, null);
   const [projectStateData, setProjectStateData] = useState<any | null>(null)
   const [projectPriceInfo, setProjectPriceInfo] = useState<any | null>(null)
   const [projectMaxHasBeenInvoked, setProjectMaxHasBeenInvoked] = useState<any | null>(null)
@@ -29,16 +31,37 @@ const MinterSetPriceHolderV5Interface = ({ coreContractAddress, mintContractAddr
   const [holderProof, setHolderProof] = useState<any | null>(null)
 
   useEffect(() => {
-    if (account.isConnected) {
-      fetch(`${HOLDER_PROOF_API_URL}?contractAddress=${coreContractAddress}&projectId=${projectId}&walletAddress=${account.address}&chainId=${EXPECTED_CHAIN_ID}`)
-        .then((response) => {
-          setHolderProofLoading(false)
-          return response.json()
-        })
-        .then((data) => { setHolderProof(data) })
-        .catch(() => { setHolderProof(null) })
+    if (account.isConnected && account.address && coreContractAddress && projectId) {
+      let [walletAddress, projectKey] = [account.address, `${coreContractAddress}-${projectId}`]
+      if (localHolderProof !== null && localHolderProof[walletAddress] && localHolderProof[walletAddress][projectKey]) {
+        setHolderProofLoading(false)
+        setHolderProof(localHolderProof[walletAddress][projectKey])
+      } else {
+        setHolderProofLoading(true)
+        setHolderProof(null)
+        fetch(`${HOLDER_PROOF_API_URL}?contractAddress=${coreContractAddress}&projectId=${projectId}&walletAddress=${account.address}&chainId=${EXPECTED_CHAIN_ID}`)
+          .then((response) => {
+            setHolderProofLoading(false)
+            return response.json()
+          })
+          .then((data) => {
+            if (data) {
+              setHolderProof(data)
+              if (localHolderProof === null) {
+                setLocalHolderProof({ [walletAddress]: { [projectKey]: data } })
+              } else if (!localHolderProof[walletAddress]) {
+                setLocalHolderProof({ ...localHolderProof, [walletAddress]: { [projectKey]: data } })
+              } else if (!localHolderProof[walletAddress][`${projectKey}`]) {
+                setLocalHolderProof({ ...localHolderProof, [walletAddress]: { ...localHolderProof[walletAddress], [projectKey]: data } })
+              }
+            }
+          })
+          .catch((error) => {
+            setHolderProof(null)
+          })
+      }
     }
-  }, [account.isConnected, account.address, coreContractAddress, projectId])
+  }, [account.isConnected, account.address, coreContractAddress, projectId, localHolderProof])
 
   const { data, isError, isLoading } = useContractReads({
     contracts: [
