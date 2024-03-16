@@ -6,7 +6,7 @@ import {
   Grid, Typography
 } from "@mui/material"
 import useTheme from "@mui/material/styles/useTheme"
-import { PROJECTS_PER_PAGE } from "config"
+import {FEATURED_PROJECT_ID, PROJECTS_PER_PAGE} from "config"
 import { OrderDirection, Project } from "utils/types"
 import ProjectPreview from "components/ProjectPreview"
 import Loading from "components/Loading"
@@ -32,7 +32,7 @@ const Projects = () => {
   }, [countProjectsResponse.data?.projects?.length])
 
   return (
-    <Box>
+    <Box sx={{display: "flex", flexDirection: "column"}}>
         {
           loading ?
           (
@@ -52,7 +52,7 @@ const Projects = () => {
           (
             data?.projects && (
               data.projects?.map((project: Project) => (
-                <Box key={`${project.contract.id}-${project.projectId}`} sx={{marginBottom: "25px"}}>
+                <Box key={`${project.contract.id}-${project.projectId}`} sx={{marginBottom: "25px", order: (project.id === FEATURED_PROJECT_ID) ? 1 : 2}}>
                   <ProjectPreview
                     project={project}
                     width={windowSize.width > theme.breakpoints.values.tablet ? Math.min(windowSize.width / 3, 600) : 0.8 * windowSize.width}
@@ -73,7 +73,7 @@ const Projects = () => {
         }
         {
           !error && !loading && data?.projects?.length > 0 && (
-            <Box sx={{display: "flex", justifyContent: "center", marginTop: "25px"}}>
+            <Box sx={{display: "flex", justifyContent: "center", marginTop: "0px", order: 2}}>
               <Pagination
                 count={Math.ceil(countProjects/PROJECTS_PER_PAGE)}
                 page={currentPage + 1}
