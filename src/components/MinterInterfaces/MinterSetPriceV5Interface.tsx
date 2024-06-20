@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useAccount, useBalance, useContractReads } from "wagmi"
 import { BigNumber, utils } from "ethers"
-import { Box } from "@mui/material"
+import {Box, Link, Typography} from "@mui/material"
 import GenArt721CoreV3_EngineABI from "abi/V3/GenArt721CoreV3_Engine.json"
 import MinterSetPriceV5ABI from "abi/V3/MinterSetPriceV5.json"
 import MintingProgress from "components/MintingProgress"
@@ -32,6 +32,7 @@ const MinterSetPriceV5Interface = (
   })
 
   const [projectStateData, setProjectStateData] = useState<any | null>(null)
+  const [projectDetails, setProjectDetails] = useState<any | null>(null)
   const [projectPriceInfo, setProjectPriceInfo] = useState<any | null>(null)
   const [projectMaxHasBeenInvoked, setProjectMaxHasBeenInvoked] = useState<any | null>(null)
 
@@ -41,6 +42,12 @@ const MinterSetPriceV5Interface = (
         address: coreContractAddress as `0x${string}`,
         abi: GenArt721CoreV3_EngineABI,
         functionName: "projectStateData",
+        args: [BigNumber.from(projectId)]
+      },
+      {
+        address: coreContractAddress as `0x${string}`,
+        abi: GenArt721CoreV3_EngineABI,
+        functionName: "projectDetails",
         args: [BigNumber.from(projectId)]
       },
       {
@@ -59,8 +66,9 @@ const MinterSetPriceV5Interface = (
     watch: true,
     onSuccess(data) {
       setProjectStateData(data[0])
-      setProjectPriceInfo(data[1])
-      setProjectMaxHasBeenInvoked(data[2])
+      setProjectDetails(data[1])
+      setProjectPriceInfo(data[2])
+      setProjectMaxHasBeenInvoked(data[3])
     }
   })
 
@@ -70,6 +78,7 @@ const MinterSetPriceV5Interface = (
 
   const isArtist = account.isConnected && account.address?.toLowerCase() === artistAddress?.toLowerCase()
   const isNotArtist = account.isConnected && account.address?.toLowerCase() !== artistAddress?.toLowerCase()
+  const projectWebsite = projectDetails.website || false
   const invocations = projectStateData.invocations.toNumber()
   const maxInvocations = projectStateData.maxInvocations.toNumber()
   const isPaused = projectStateData.paused
@@ -115,6 +124,15 @@ const MinterSetPriceV5Interface = (
         isPaused={isPaused}
         isSoldOut={isSoldOut}
       />
+      <Typography><br/></Typography>
+      {projectWebsite ?
+        <Box sx={{display: "flex", justifyContent: "center"}}>
+          <Link href={projectWebsite} target={"blank"}>
+            <Typography variant={"h6"}>{projectWebsite}</Typography>
+          </Link>
+        </Box> :
+        <></>
+      }
     </Box>
   )
 }
