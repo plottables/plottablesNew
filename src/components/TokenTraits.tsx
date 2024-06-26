@@ -19,7 +19,7 @@ interface Props {
 
 const TokenTraits = ({ contractAddress, tokenId }: Props) => {
   const { loading, error, data } = useTokenTraits(contractAddress, tokenId)
-  const traits = data?.traits?.filter((t:Trait) => t.value.indexOf('All') === -1)
+  const traits = data?.features
 
   if (loading) {
     return <Loading/>
@@ -33,13 +33,12 @@ const TokenTraits = ({ contractAddress, tokenId }: Props) => {
     )
   }
 
-  return traits && traits.length > 0 && (
+  return traits && Object.keys(traits).length > 0 && (
     <Box sx={{display: "flex", alignItems: "center", flexDirection: "column"}}>
       <Typography>Features</Typography>
-      {traits.map((trait:Trait) => {
-        const p = trait.value.split(":")
+      {Object.entries(traits).map(([k, v]) => {
         return (
-          <Typography key={trait.value} component={"span"} variant={"h2"}>{p[0]}: {p[1]}</Typography>
+          <Typography key={k} component={"span"} variant={"h2"}>{`${k}: ${v}`}</Typography>
         )
       })}
     </Box>
