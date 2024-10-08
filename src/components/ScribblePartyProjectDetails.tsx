@@ -28,14 +28,14 @@ import useProject from "hooks/useProject"
 import useWindowSize from "hooks/useWindowSize"
 import { getContractConfigByAddress } from "utils/contractInfoHelper"
 import EditProjectButton from "components/EditProjectButton"
-import {useAccount, useContractRead, useContractReads} from "wagmi"
+import {useAccount, useContractRead, useContractReads, useEnsName} from "wagmi"
 import MintingInterfaceFilter from "components/MintingInterfaceFilter"
 import ReactMarkdown from "react-markdown";
 import LineBreak from "./LineBreak";
 import ProjectDescription from "./ProjectDescription";
 import GenArt721CoreV3_EngineABI from "../abi/V3/GenArt721CoreV3_Engine.json";
 import ScribblePartyProceedsManagerABI from "../abi/ScribblePartyProceedsManager.json";
-import {BigNumber} from "ethers";
+import {BigNumber, utils} from "ethers";
 import MinterSetPriceV5ABI from "../abi/V3/MinterSetPriceV5.json";
 
 interface Props {
@@ -60,15 +60,30 @@ const ScribblePartyProjectDetails = ({ contractAddress, id, proceedsManagerAddre
         : windowSize.width - 32
   const contractConfig = getContractConfigByAddress(contractAddress)
 
-
-  const [proceedsStatus, setProceedsStatus] = useState<any | null>(null)
+  const [isStatusLoaded, setIsStatusLoaded] = useState<Boolean>(false)
+  const [statusStarted, setStatusStarted] = useState<any | null>(null)
+  const [statusEndTime, setStatusEndTime] = useState<any | null>(null)
+  const [statusFinished, setStatusFinished] = useState<any | null>(null)
+  const [statusNextMintPrizePortionBasisPoints, setStatusNextMintPrizePortionBasisPoints] = useState<any | null>(null)
+  const [statusNextMintTimeExtensionSeconds, setStatusNextMintTimeExtensionSeconds] = useState<any | null>(null)
+  const [statusLatestMintOwner, setStatusLatestMintOwner] = useState<String>("")
+  const [statusPrizeAmount, setStatusPrizeAmount] = useState<any | null>(null)
+  const [statusPrizeWithdrawn, setStatusPrizeWithdrawn] = useState<any | null>(null)
   useContractRead({
     address: proceedsManagerAddress as `0x${string}`,
     abi: ScribblePartyProceedsManagerABI,
     functionName: "status",
     watch: true,
-    onSuccess(statusData) {
-      setProceedsStatus(statusData)
+    onSuccess(statusData: [Boolean, BigNumber, Boolean, BigNumber, BigNumber, String, BigNumber, Boolean]) {
+      setIsStatusLoaded(true);
+      setStatusStarted(statusData[0])
+      setStatusEndTime(statusData[1])
+      setStatusFinished(statusData[2])
+      setStatusNextMintPrizePortionBasisPoints(statusData[3])
+      setStatusNextMintTimeExtensionSeconds(statusData[4])
+      setStatusLatestMintOwner(statusData[5])
+      setStatusPrizeAmount(statusData[6])
+      setStatusPrizeWithdrawn(statusData[7])
     }
   })
 
@@ -118,31 +133,6 @@ const ScribblePartyProjectDetails = ({ contractAddress, id, proceedsManagerAddre
         )
       }
 
-      {
-        proceedsStatus &&
-        (
-          <Box>
-            <Typography>
-              started: {proceedsStatus[0].toString()}
-              <br/>
-              endTime: {proceedsStatus[1].toString()}
-              <br/>
-              finished: {proceedsStatus[2].toString()}
-              <br/>
-              nextMintPrizePortionBasisPoints: {proceedsStatus[3].toString()}
-              <br/>
-              nextMintTimeExtensionSeconds: {proceedsStatus[4].toString()}
-              <br/>
-              latestMintOwner: {proceedsStatus[5].toString()}
-              <br/>
-              prizeAmount: {proceedsStatus[6].toString()}
-              <br/>
-              prizeWithdrawn: {proceedsStatus[7].toString()}
-            </Typography>
-          </Box>
-        )
-      }
-
 
       <Box sx={{display: "flex", justifyContent: "center"}}>
         <Typography>
@@ -150,6 +140,23 @@ const ScribblePartyProjectDetails = ({ contractAddress, id, proceedsManagerAddre
         </Typography>
       </Box>
       <Typography><br/></Typography>
+
+      {
+        project && isStatusLoaded &&
+        (
+          <ScribblePartyStatusDetails
+            started={statusStarted}
+            endTime={statusEndTime}
+            finished={statusFinished}
+            nextMintPrizePortionBasisPoints={statusNextMintPrizePortionBasisPoints}
+            nextMintTimeExtensionSeconds={statusNextMintTimeExtensionSeconds}
+            latestMintOwner={statusLatestMintOwner}
+            prizeAmount={statusPrizeAmount}
+            prizeWithdrawn={statusPrizeWithdrawn}
+            mintPrice={project.minterConfiguration.basePrice}
+          />
+        )
+      }
 
       <Box sx={{
         display: {mobile: "block", tablet: "flex"},
@@ -243,4 +250,55 @@ const ScribblePartyProjectDetails = ({ contractAddress, id, proceedsManagerAddre
   )
 }
 
+interface StatusProps {
+  started: boolean,
+  endTime: BigNumber,
+  finished: boolean,
+  nextMintPrizePortionBasisPoints: BigNumber,
+  nextMintTimeExtensionSeconds: BigNumber,
+  latestMintOwner: String,
+  prizeAmount: BigNumber,
+  prizeWithdrawn: boolean,
+  mintPrice: BigInt
+}
+const ScribblePartyStatusDetails = (props: StatusProps) => {
+  const prizeAmountEth = utils.formatEther(props.prizeAmount.toString())
+  const nextMintPrizeContribution = utils.formatEther(props.nextMintPrizePortionBasisPoints.toNumber() / 100000 * Number(props.mintPrice) * 0.85)
+
+  let seconds = props.nextMintTimeExtensionSeconds.toNumber()
+  const hours = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  const minutes = Math.floor(seconds / 60);
+  seconds %= 60;
+  const hourStr = hours > 0 ? `${hours} hour${hours > 1 ? 's' : ''}` : '';
+  const minuteStr = minutes > 0 ? `, ${minutes} minute${minutes > 1 ? 's' : ''}` : '';
+  const secondStr = seconds > 0 ? `, ${seconds} second${seconds !== 1 ? 's' : ''}` : '';
+  const nextMintExtensionString = hourStr + minuteStr + secondStr
+
+  const ensName = useEnsName({ address: props.latestMintOwner as `0x${string}`, chainId: 1 })
+  const shortAddress = props.latestMintOwner ? `${props.latestMintOwner.slice(0, 6)}...${ props.latestMintOwner.slice(38, 42)}` : null
+  const currentPrizeWinner = ensName.data || shortAddress
+
+  return (
+    <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center"}}>
+      <Box sx = {{display: "flex", justifyContent: "center"}}>
+        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>
+          Game Status: {!props.started ? "Not Started" : props.finished ? "Finished" : "Ends in hh:mm (at mm-dd-hh-mm-ss local time"}
+        </Typography>
+      </Box>
+      <Box sx = {{display: {mobile: "block", tablet: "flex"}, justifyContent: {mobile: "center", tablet: "space-evenly"}}}>
+        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Prize Pool: {prizeAmountEth}</Typography>
+        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Prize Winner: {currentPrizeWinner}</Typography>
+      </Box>
+      <Box sx = {{display: "flex", justifyContent: "center"}}>
+        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Next Mint:</Typography>
+      </Box>
+      <Box sx = {{display: {mobile: "block", tablet: "flex"}, justifyContent: {mobile: "center", tablet: "space-evenly"}}}>
+        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} eth to the prize pool</Typography>
+        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Extends the game by {nextMintExtensionString}</Typography>
+      </Box>
+      <br/>
+    </Box>
+  )
+}
 export default ScribblePartyProjectDetails

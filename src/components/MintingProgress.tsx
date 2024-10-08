@@ -11,6 +11,9 @@ interface Props {
 }
 
 const MintingProgress = ({invocations, maxInvocations, maxHasBeenInvoked}: Props) => {
+  if (maxInvocations === 1000000) {
+    return ( <Box sx={{marginBottom: 3}}><Box><Typography>Open Edition</Typography></Box></Box> )
+  }
   return (
     <Box sx={{marginBottom: 3}}>
       <Box>
