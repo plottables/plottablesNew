@@ -263,42 +263,63 @@ interface StatusProps {
 }
 const ScribblePartyStatusDetails = (props: StatusProps) => {
   const prizeAmountEth = utils.formatEther(props.prizeAmount.toString())
-  const nextMintPrizeContribution = utils.formatEther(props.nextMintPrizePortionBasisPoints.toNumber() / 100000 * Number(props.mintPrice) * 0.85)
+  const nextMintPrizeContribution = utils.formatEther((props.nextMintPrizePortionBasisPoints.toNumber() / 10000 * Number(props.mintPrice) * 0.85).toString())
 
-  let seconds = props.nextMintTimeExtensionSeconds.toNumber()
-  const hours = Math.floor(seconds / 3600);
-  seconds %= 3600;
-  const minutes = Math.floor(seconds / 60);
-  seconds %= 60;
-  const hourStr = hours > 0 ? `${hours} hour${hours > 1 ? 's' : ''}` : '';
-  const minuteStr = minutes > 0 ? `, ${minutes} minute${minutes > 1 ? 's' : ''}` : '';
-  const secondStr = seconds > 0 ? `, ${seconds} second${seconds !== 1 ? 's' : ''}` : '';
-  const nextMintExtensionString = hourStr + minuteStr + secondStr
+  const endTimeDate = new Date(props.endTime.toNumber() * 1000)
+  const endTimeDateString = `${endTimeDate.getMonth() + 1}/${endTimeDate.getDate()}/${endTimeDate.getFullYear()} at ${endTimeDate.getHours()}:${endTimeDate.getMinutes()}:${endTimeDate.getSeconds()}`
+  const gameStatusEndTime = convertSecondsToDHMS(props.endTime.toNumber() - Math.floor(Date.now() / 1000))
+  let gameStatusEndTimeStringParts = []
+  if (gameStatusEndTime.days * 24 + gameStatusEndTime.hours > 0) gameStatusEndTimeStringParts.push(`${gameStatusEndTime.days * 24 + gameStatusEndTime.hours} hours`)
+  if (gameStatusEndTime.minutes > 0) gameStatusEndTimeStringParts.push(`${gameStatusEndTime.minutes} minutes`)
+  if (gameStatusEndTime.seconds > 0) gameStatusEndTimeStringParts.push(`${gameStatusEndTime.seconds} seconds`)
+  let gameStatusEndTimeString = ''
+  if (gameStatusEndTimeStringParts.length === 1) gameStatusEndTimeString = gameStatusEndTimeStringParts[0]
+  else if (gameStatusEndTimeStringParts.length === 2) gameStatusEndTimeString = gameStatusEndTimeStringParts.join(' and ')
+  else {
+    gameStatusEndTimeString = gameStatusEndTimeStringParts.slice(0, gameStatusEndTimeStringParts.length - 1).join(', ')
+    gameStatusEndTimeString += ` and ${gameStatusEndTimeStringParts[gameStatusEndTimeStringParts.length - 1]}`
+  }
+
+  const nextMintExtensionTime = convertSecondsToDHMS(props.nextMintTimeExtensionSeconds.toNumber());
+  let nextMintExtensionStringParts = []
+  if (nextMintExtensionTime.days * 24 + nextMintExtensionTime.hours > 0) nextMintExtensionStringParts.push(`${nextMintExtensionTime.days * 24 + nextMintExtensionTime.hours} hours`)
+  if (nextMintExtensionTime.minutes > 0) nextMintExtensionStringParts.push(`${nextMintExtensionTime.minutes} minutes`)
+  if (nextMintExtensionTime.seconds > 0) nextMintExtensionStringParts.push(`${nextMintExtensionTime.seconds} seconds`)
+  let nextMintExtensionString = ''
+  if (nextMintExtensionStringParts.length === 1) nextMintExtensionString = nextMintExtensionStringParts[0]
+  else if (nextMintExtensionStringParts.length === 2) nextMintExtensionString = nextMintExtensionStringParts.join(' and ')
+  else {
+    nextMintExtensionString = nextMintExtensionStringParts.slice(0, nextMintExtensionStringParts.length - 1).join(', ')
+    nextMintExtensionString += ` and ${nextMintExtensionStringParts[nextMintExtensionStringParts.length - 1]}`
+  }
 
   const ensName = useEnsName({ address: props.latestMintOwner as `0x${string}`, chainId: 1 })
   const shortAddress = props.latestMintOwner ? `${props.latestMintOwner.slice(0, 6)}...${ props.latestMintOwner.slice(38, 42)}` : null
   const currentPrizeWinner = ensName.data || shortAddress
 
   return (
-    <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center"}}>
-      <Box sx = {{display: "flex", justifyContent: "center"}}>
-        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>
-          Game Status: {!props.started ? "Not Started" : props.finished ? "Finished" : "Ends in hh:mm (at mm-dd-hh-mm-ss local time"}
-        </Typography>
-      </Box>
-      <Box sx = {{display: {mobile: "block", tablet: "flex"}, justifyContent: {mobile: "center", tablet: "space-evenly"}}}>
-        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Prize Pool: {prizeAmountEth}</Typography>
-        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Prize Winner: {currentPrizeWinner}</Typography>
-      </Box>
-      <Box sx = {{display: "flex", justifyContent: "center"}}>
-        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Next Mint:</Typography>
-      </Box>
-      <Box sx = {{display: {mobile: "block", tablet: "flex"}, justifyContent: {mobile: "center", tablet: "space-evenly"}}}>
-        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} eth to the prize pool</Typography>
-        <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Extends the game by {nextMintExtensionString}</Typography>
-      </Box>
+    <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>
+        Game Status: {!props.started ? "Not Started" : props.finished ? "Finished" : `Ends in ${gameStatusEndTimeString} (${endTimeDateString} local time)`}
+      </Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Prize: {prizeAmountEth} ETH</Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Winner: {currentPrizeWinner}</Typography>
+      <Typography><br/></Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Next Mint:</Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} ETH to prize (100% of artist proceeds)</Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Extends the game by {nextMintExtensionString}</Typography>
       <br/>
     </Box>
   )
 }
 export default ScribblePartyProjectDetails
+
+function convertSecondsToDHMS(seconds: number): { days: number, hours: number, minutes: number, seconds: number } {
+  const days = Math.floor(seconds / 86400);
+  seconds %= 86400;
+  const hours = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  const minutes = Math.floor(seconds / 60);
+  seconds %= 60;
+  return { days, hours, minutes, seconds }
+}
