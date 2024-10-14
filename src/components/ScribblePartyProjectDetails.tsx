@@ -306,7 +306,7 @@ const ScribblePartyStatusDetails = (props: StatusProps) => {
       <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Winner: {currentPrizeWinner}</Typography>
       <Typography><br/></Typography>
       <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Next Mint:</Typography>
-      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} ETH to prize (100% of artist proceeds)</Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} ETH to prize ({props.nextMintPrizePortionBasisPoints.toNumber() / 100}% of artist proceeds)</Typography>
       <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Extends the game by {nextMintExtensionString}</Typography>
       <br/>
     </Box>
