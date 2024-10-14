@@ -266,7 +266,7 @@ const ScribblePartyStatusDetails = (props: StatusProps) => {
   const nextMintPrizeContribution = utils.formatEther((props.nextMintPrizePortionBasisPoints.toNumber() / 10000 * Number(props.mintPrice) * 0.85).toString())
 
   const endTimeDate = new Date(props.endTime.toNumber() * 1000)
-  const endTimeDateString = `${endTimeDate.getMonth() + 1}/${endTimeDate.getDate()}/${endTimeDate.getFullYear()} at ${endTimeDate.getHours()}:${endTimeDate.getMinutes()}:${endTimeDate.getSeconds()}`
+  const endTimeDateString = `${endTimeDate.getMonth() + 1}/${endTimeDate.getDate()}/${endTimeDate.getFullYear()} at ${endTimeDate.getHours().toString().padStart(2, '0')}:${endTimeDate.getMinutes().toString().padStart(2, '0')}:${endTimeDate.getSeconds().toString().padStart(2, '0')}`
   const gameStatusEndTime = convertSecondsToDHMS(props.endTime.toNumber() - Math.floor(Date.now() / 1000))
   let gameStatusEndTimeStringParts = []
   if (gameStatusEndTime.days * 24 + gameStatusEndTime.hours > 0) gameStatusEndTimeStringParts.push(`${gameStatusEndTime.days * 24 + gameStatusEndTime.hours} hours`)

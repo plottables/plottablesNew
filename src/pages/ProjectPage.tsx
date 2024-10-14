@@ -6,7 +6,7 @@ import ScribblePartyProjectDetails from "components/ScribblePartyProjectDetails"
 const ProjectPage = () => {
   const { contractAddress, projectId } = useParams()
 
-  if (contractAddress === '0x9f22b52702e1c00b1318e1dacd543c17ad00774d' && projectId === '4' || projectId === '3') {
+  if (contractAddress?.toLowerCase() === '0x9f22b52702e1c00b1318e1dacd543c17ad00774d'.toLowerCase() && projectId === '4' || projectId === '3') {
     return (
       <Page>
         {
