@@ -189,14 +189,32 @@ const ScribblePartyProjectDetails = ({ contractAddress, id, proceedsManagerAddre
             textAlign: {mobile: "center", tablet: "left"}
           }
         }}>
-          <MintingInterfaceFilter
-            contractVersion={contractConfig?.CONTRACT_VERSION}
-            coreContractAddress={contractAddress}
-            mintContractAddress={contractConfig?.MINT_CONTRACT_ADDRESS}
-            projectId={project.projectId}
-            artistAddress={project.artistAddress}
-            scriptAspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
-          />
+          {
+            statusFinished && (
+              <Button
+                disabled={true}
+                sx={{
+                  boxShadow: "none",
+                  textTransform: "none"
+                }}>
+                <Typography variant={"h2"}>
+                  Game Complete!
+                </Typography>
+              </Button>
+            )
+          }
+          {
+            !statusFinished && (
+              <MintingInterfaceFilter
+                contractVersion={contractConfig?.CONTRACT_VERSION}
+                coreContractAddress={contractAddress}
+                mintContractAddress={contractConfig?.MINT_CONTRACT_ADDRESS}
+                projectId={project.projectId}
+                artistAddress={project.artistAddress}
+                scriptAspectRatio={project.aspectRatio || parseAspectRatio(project.scriptJSON)}
+              />
+            )
+          }
           <Typography><br/></Typography>
           <ProjectDescription projectId={project.id} projectDescription={project.description} />
         </Box>
@@ -298,16 +316,34 @@ const ScribblePartyStatusDetails = (props: StatusProps) => {
   const currentPrizeWinner = ensName.data || shortAddress
 
   return (
+    <Box>
     <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
       <Typography variant={"h4"} sx={{fontWeight: "normal"}}>
         Game Status: {!props.started ? "Not Started" : props.finished ? "Finished" : `Ends in ${gameStatusEndTimeString} (${endTimeDateString} local time)`}
       </Typography>
-      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Prize: {prizeAmountEth} ETH</Typography>
-      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Current Winner: {currentPrizeWinner}</Typography>
-      <Typography><br/></Typography>
-      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Next Mint:</Typography>
-      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} ETH to prize ({props.nextMintPrizePortionBasisPoints.toNumber() / 100}% of artist proceeds)</Typography>
-      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Extends the game by {nextMintExtensionString}</Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>{props.finished ? 'Final' : 'Current'} Prize: {prizeAmountEth} ETH</Typography>
+      <Typography variant={"h4"} sx={{fontWeight: "normal"}}>{props.finished ? 'Final' : 'Current'} Winner: {currentPrizeWinner}</Typography>
+    </Box>
+      {
+        !props.started && (
+          <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <Typography><br/></Typography>
+            <Typography variant={"h4"} sx={{fontWeight: "normal"}}>First Mint:</Typography>
+            <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} ETH to prize ({props.nextMintPrizePortionBasisPoints.toNumber() / 100}% after fees)</Typography>
+            <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Starts the countdown at {nextMintExtensionString}</Typography>
+          </Box>
+        )
+      }
+      {
+        props.started && !props.finished && (
+          <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <Typography><br/></Typography>
+            <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Next Mint:</Typography>
+            <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Adds {nextMintPrizeContribution} ETH to prize ({props.nextMintPrizePortionBasisPoints.toNumber() / 100}% after fees)</Typography>
+            <Typography variant={"h4"} sx={{fontWeight: "normal"}}>Resets the countdown to {nextMintExtensionString} if less remains</Typography>
+          </Box>
+        )
+      }
       <br/>
     </Box>
   )
