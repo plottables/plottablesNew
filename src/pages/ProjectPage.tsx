@@ -10,7 +10,7 @@ const ProjectPage = () => {
     return (
       <Page>
         {
-          contractAddress && projectId && <ScribblePartyProjectDetails contractAddress={contractAddress} id={projectId} proceedsManagerAddress={'0xF61809DF1e207971649EFed2cC773625DAd16bB5'}/>
+          contractAddress && projectId && <ScribblePartyProjectDetails contractAddress={contractAddress} id={projectId} proceedsManagerAddress={'0xa33c59f01bb636a54850e6334A60778D213734CA'}/>
         }
       </Page>
     )
