@@ -318,10 +318,10 @@ const ScribblePartyStatusDetails = (props: StatusProps) => {
   return (
     <Box>
       <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-        <Link href={"https://testnet.minimizer.art/scribbleparty"} target={"blank"}>
+        <Link href={"https://minimizer.art/scribbleparty"} target={"blank"}>
           <Typography variant={"h3"}>{"Game Info"}</Typography>
         </Link>
-        <br/>
+        <Typography><br/></Typography>
         <Typography variant={"h4"} sx={{fontWeight: "normal"}}>
           Game Status: {!props.started ? "Not Started" : props.finished ? "Finished" : `Ends in ${gameStatusEndTimeString} (${endTimeDateString} local time)`}
         </Typography>
@@ -348,7 +348,7 @@ const ScribblePartyStatusDetails = (props: StatusProps) => {
           </Box>
         )
       }
-      <br/>
+      <Typography><br/></Typography>
     </Box>
   )
 }
